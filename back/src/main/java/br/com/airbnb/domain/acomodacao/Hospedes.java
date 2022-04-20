@@ -1,13 +1,15 @@
 package br.com.airbnb.domain.acomodacao;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Hospedes {
 	private Integer hospedes;
 	private Integer camas;
 	private Integer quartos;
 	private Integer banheiros;
 
-	public Hospedes() {
-	}
+	public Hospedes() { }
 
 	public Hospedes(Integer hospedes, Integer camas, Integer quartos, Integer banheiros) {
 		this.hospedes = hospedes;
