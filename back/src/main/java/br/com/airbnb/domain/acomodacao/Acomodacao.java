@@ -1,13 +1,20 @@
 package br.com.airbnb.domain.acomodacao;
 
+import java.awt.Point;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
@@ -17,34 +24,50 @@ public class Acomodacao {
 	@Id
 	@GeneratedValue()
 	private Long id;
+
+	@Enumerated(EnumType.STRING)
 	private TipoLugar tipoLugar;
-	private Localizacao localizacao;
+
+	@Column(name = "localizacao", columnDefinition = "POINT")
+	private Point localizacao;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id", referencedColumnName = "id")
 	private Endereco endereco;
+
+	@Embedded
 	private Hospedes hopedes;
+
+	@ElementCollection
 	private List<Espaco> espacos;
+
+	@Embedded
 	private PrecoPernoite precoPernoite;
 
+	@Column(length = 500)
 	private String descricao;
 
+	@ElementCollection
 	private List<Destaque> destaques;
 
+	@Column(length = 50)
 	private String titulo;
 
-	public Acomodacao() { }
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "foto_id")
+	private List<Foto> fotos;
 
-	public Acomodacao(Long id, TipoLugar tipoLugar, Localizacao localizacao, Endereco endereco, Hospedes hopedes,
-			List<Espaco> espacos, PrecoPernoite precoPernoite, String descricao, List<Destaque> destaques,
-			String titulo) {
+	public Acomodacao() {
+	}
+
+	public Acomodacao(Long id, TipoLugar tipoLugar, Endereco endereco, Hospedes hopedes, List<Espaco> espacos,
+			PrecoPernoite precoPernoite, String descricao, List<Destaque> destaques, String titulo) {
 		if (destaques.size() > 2) {
 			throw new NaoEhPossivelCadastrarMaisQueDoisDestaquesException();
 		}
 
 		this.id = id;
 		this.tipoLugar = tipoLugar;
-		this.localizacao = localizacao;
 		this.endereco = endereco;
 		this.hopedes = hopedes;
 		this.espacos = espacos;
@@ -61,10 +84,6 @@ public class Acomodacao {
 
 	public TipoLugar getTipoLugar() {
 		return tipoLugar;
-	}
-
-	public Localizacao getLocalizacao() {
-		return localizacao;
 	}
 
 	public Endereco getEndereco() {
@@ -93,6 +112,14 @@ public class Acomodacao {
 
 	public String getTitulo() {
 		return titulo;
+	}
+
+	public List<Foto> getFotos() {
+		return fotos;
+	}
+
+	public Point getLocalizacao() {
+		return localizacao;
 	}
 
 }

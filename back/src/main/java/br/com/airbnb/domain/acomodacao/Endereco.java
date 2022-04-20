@@ -6,11 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import br.com.airbnb.domain.municipio.Municipio;
-
-/**
- * @author uires
- */
 @Entity
 public class Endereco {
 
@@ -22,12 +17,11 @@ public class Endereco {
 	private String cidade;
 
 	@OneToOne(mappedBy = "endereco")
-	private Municipio municipio;
-	
+	private Acomodacao acomodacao;
+
 	private String codigoPostal;
 
-	public Endereco() {
-	}
+	public Endereco() { }
 
 	public Long getId() {
 		return id;
@@ -43,10 +37,6 @@ public class Endereco {
 
 	public String getCidade() {
 		return cidade;
-	}
-
-	public Municipio getMunicipio() {
-		return municipio;
 	}
 
 	public String getCodigoPostal() {
