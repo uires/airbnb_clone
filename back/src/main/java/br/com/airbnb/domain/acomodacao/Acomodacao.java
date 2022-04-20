@@ -14,10 +14,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
+import br.com.airbnb.domain.usuario.Usuario;
 
 @Entity
 public class Acomodacao {
@@ -39,6 +41,7 @@ public class Acomodacao {
 	private Hospedes hopedes;
 
 	@ElementCollection
+	@Enumerated(EnumType.STRING)
 	private List<Espaco> espacos;
 
 	@Embedded
@@ -48,6 +51,7 @@ public class Acomodacao {
 	private String descricao;
 
 	@ElementCollection
+	@Enumerated(EnumType.STRING)
 	private List<Destaque> destaques;
 
 	@Column(length = 50)
@@ -56,9 +60,12 @@ public class Acomodacao {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "foto_id")
 	private List<Foto> fotos;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
-	public Acomodacao() {
-	}
+	public Acomodacao() { }
 
 	public Acomodacao(Long id, TipoLugar tipoLugar, Endereco endereco, Hospedes hopedes, List<Espaco> espacos,
 			PrecoPernoite precoPernoite, String descricao, List<Destaque> destaques, String titulo) {

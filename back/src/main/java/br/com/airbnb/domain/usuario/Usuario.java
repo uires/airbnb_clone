@@ -2,16 +2,21 @@ package br.com.airbnb.domain.usuario;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import br.com.airbnb.domain.acomodacao.Acomodacao;
 
 @Entity
 public class Usuario implements UserDetails {
@@ -27,6 +32,9 @@ public class Usuario implements UserDetails {
 	private Foto foto;
 	private String email;
 	private String senha;
+
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	private List<Acomodacao> acomodacoes;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -73,6 +81,10 @@ public class Usuario implements UserDetails {
 
 	public Foto getFoto() {
 		return foto;
+	}
+
+	public List<Acomodacao> getAcomodacoes() {
+		return acomodacoes;
 	}
 
 }
