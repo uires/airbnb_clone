@@ -3,6 +3,7 @@ package br.com.airbnb.domain.acomodacao;
 import java.awt.Point;
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,24 +24,32 @@ import javax.persistence.OneToOne;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.Usuario;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class Acomodacao {
 	@Id
 	@GeneratedValue()
+	@Getter
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
+	@Getter
 	private TipoLugar tipoLugar;
 
 	@Column(name = "localizacao", columnDefinition = "POINT")
+	@Getter
 	private Point localizacao;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_id", referencedColumnName = "id")
+	@Getter
 	private Endereco endereco;
 
 	@Embedded
+	@Getter
 	private Hospedes hopedes;
 
 	@ElementCollection
@@ -49,9 +58,11 @@ public class Acomodacao {
 
 	@Embedded
 	@Column(nullable = false)
+	@Getter
 	private PrecoPernoite precoPernoite;
 
 	@Column(nullable = false)
+	@Getter
 	private BigDecimal taxaDeServico;
 
 	@Column(nullable = false)
@@ -65,6 +76,7 @@ public class Acomodacao {
 	private List<Destaque> destaques;
 
 	@Column(length = 50, nullable = false)
+	@Getter
 	private String titulo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -73,15 +85,17 @@ public class Acomodacao {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
+	@Getter
 	private Usuario usuario;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acomodacao")
 	private List<Reserva> reservas;
 
+	@Getter
 	private LocalTime horarioCheckIn;
-	private LocalTime horarioCheckOut;
 
-	public Acomodacao() { }
+	@Getter
+	private LocalTime horarioCheckOut;
 
 	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
 			List<Espaco> espacos, PrecoPernoite precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
@@ -107,72 +121,21 @@ public class Acomodacao {
 		this.reservas = reservas;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public TipoLugar getTipoLugar() {
-		return tipoLugar;
-	}
-
-	public Point getLocalizacao() {
-		return localizacao;
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public Hospedes getHopedes() {
-		return hopedes;
+	public List<Destaque> getDestaques() {
+		return new ArrayList<Destaque>(destaques);
 	}
 
 	public List<Espaco> getEspacos() {
-		return espacos;
-	}
-
-	public PrecoPernoite getPrecoPernoite() {
-		return precoPernoite;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public List<Destaque> getDestaques() {
-		return destaques;
-	}
-
-	public String getTitulo() {
-		return titulo;
+		return new ArrayList<Espaco>(espacos);
 	}
 
 	public List<Foto> getFotos() {
-		return fotos;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
+		return new ArrayList<Foto>(fotos);
 	}
 
 	public List<Reserva> getReservas() {
-		return reservas;
+		return new ArrayList<Reserva>(reservas);
 	}
 
-	public BigDecimal getTaxaDeServico() {
-		return taxaDeServico;
-	}
-
-	public BigDecimal getTaxaDeLimpeza() {
-		return taxaDeLimpeza;
-	}
-
-	public LocalTime getHorarioCheckIn() {
-		return horarioCheckIn;
-	}
-
-	public LocalTime getHorarioCheckOut() {
-		return horarioCheckOut;
-	}
-
+	
 }
