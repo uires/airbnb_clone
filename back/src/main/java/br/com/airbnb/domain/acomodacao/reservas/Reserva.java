@@ -29,15 +29,12 @@ public class Reserva {
 	private LocalDateTime inicioReserva;
 	private LocalDateTime fimReserva;
 
-	private LocalTime horarioCheckIn;
-	private LocalTime horarioCheckOut;
-
 	private LocalDateTime dataCriacaoReserva;
 
 	private BigDecimal descontoSemanal;
 	private BigDecimal valorTotal;
 
-	private boolean reservaCancelada;
+	private boolean reservaCancelada = false;
 
 	private Integer quantidadeHospedes;
 
@@ -63,14 +60,6 @@ public class Reserva {
 
 	public LocalDateTime getFimReserva() {
 		return fimReserva;
-	}
-
-	public LocalTime getHorarioCheckIn() {
-		return horarioCheckIn;
-	}
-
-	public LocalTime getHorarioCheckOut() {
-		return horarioCheckOut;
 	}
 
 	public LocalDateTime getDataCriacaoReserva() {
