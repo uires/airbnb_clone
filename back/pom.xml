@@ -6,19 +6,20 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.3</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath /> 
 	</parent>
 
 	<groupId>br.com.airbnb</groupId>
 	<artifactId>airbnb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>airbnb</name>
-	<description>é um projeto Spring que tem como objetivo copiar o Airbnb, com o objetivo de estudar
-        os projetos spring
+	<description>É um projeto Spring que tem como objetivo copiar o Airbnb
     </description>
+    
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,6 +74,13 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-spatial</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
