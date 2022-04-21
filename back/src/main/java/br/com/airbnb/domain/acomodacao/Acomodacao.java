@@ -1,6 +1,7 @@
 package br.com.airbnb.domain.acomodacao;
 
 import java.awt.Point;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
+import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.Usuario;
 
 @Entity
@@ -47,6 +49,9 @@ public class Acomodacao {
 	@Embedded
 	private PrecoPernoite precoPernoite;
 
+	private BigDecimal taxaDeServico;
+	private BigDecimal taxaDeLimpeza;
+
 	@Column(length = 500)
 	private String descricao;
 
@@ -60,12 +65,16 @@ public class Acomodacao {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "foto_id")
 	private List<Foto> fotos;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	public Acomodacao() { }
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acomodacao")
+	private List<Reserva> reservas;
+
+	public Acomodacao() {
+	}
 
 	public Acomodacao(Long id, TipoLugar tipoLugar, Endereco endereco, Hospedes hopedes, List<Espaco> espacos,
 			PrecoPernoite precoPernoite, String descricao, List<Destaque> destaques, String titulo) {
@@ -91,6 +100,10 @@ public class Acomodacao {
 
 	public TipoLugar getTipoLugar() {
 		return tipoLugar;
+	}
+
+	public Point getLocalizacao() {
+		return localizacao;
 	}
 
 	public Endereco getEndereco() {
@@ -125,8 +138,20 @@ public class Acomodacao {
 		return fotos;
 	}
 
-	public Point getLocalizacao() {
-		return localizacao;
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public BigDecimal getTaxaDeServico() {
+		return taxaDeServico;
+	}
+
+	public BigDecimal getTaxaDeLimpeza() {
+		return taxaDeLimpeza;
 	}
 
 }
