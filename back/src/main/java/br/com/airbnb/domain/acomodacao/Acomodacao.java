@@ -2,6 +2,7 @@ package br.com.airbnb.domain.acomodacao;
 
 import java.awt.Point;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -47,19 +48,23 @@ public class Acomodacao {
 	private List<Espaco> espacos;
 
 	@Embedded
+	@Column(nullable = false)
 	private PrecoPernoite precoPernoite;
 
+	@Column(nullable = false)
 	private BigDecimal taxaDeServico;
+
+	@Column(nullable = false)
 	private BigDecimal taxaDeLimpeza;
 
-	@Column(length = 500)
+	@Column(length = 500, nullable = false)
 	private String descricao;
 
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
 	private List<Destaque> destaques;
 
-	@Column(length = 50)
+	@Column(length = 50, nullable = false)
 	private String titulo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -73,25 +78,33 @@ public class Acomodacao {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acomodacao")
 	private List<Reserva> reservas;
 
-	public Acomodacao() {
-	}
+	private LocalTime horarioCheckIn;
+	private LocalTime horarioCheckOut;
 
-	public Acomodacao(Long id, TipoLugar tipoLugar, Endereco endereco, Hospedes hopedes, List<Espaco> espacos,
-			PrecoPernoite precoPernoite, String descricao, List<Destaque> destaques, String titulo) {
+	public Acomodacao() { }
+
+	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
+			List<Espaco> espacos, PrecoPernoite precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
+			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
+			List<Reserva> reservas) {
 		if (destaques.size() > 2) {
 			throw new NaoEhPossivelCadastrarMaisQueDoisDestaquesException();
 		}
-
 		this.id = id;
 		this.tipoLugar = tipoLugar;
+		this.localizacao = localizacao;
 		this.endereco = endereco;
 		this.hopedes = hopedes;
 		this.espacos = espacos;
 		this.precoPernoite = precoPernoite;
+		this.taxaDeServico = taxaDeServico;
+		this.taxaDeLimpeza = taxaDeLimpeza;
 		this.descricao = descricao;
-
 		this.destaques = destaques;
 		this.titulo = titulo;
+		this.fotos = fotos;
+		this.usuario = usuario;
+		this.reservas = reservas;
 	}
 
 	public Long getId() {
@@ -152,6 +165,14 @@ public class Acomodacao {
 
 	public BigDecimal getTaxaDeLimpeza() {
 		return taxaDeLimpeza;
+	}
+
+	public LocalTime getHorarioCheckIn() {
+		return horarioCheckIn;
+	}
+
+	public LocalTime getHorarioCheckOut() {
+		return horarioCheckOut;
 	}
 
 }
