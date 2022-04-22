@@ -1,5 +1,6 @@
 package br.com.airbnb.domain.acomodacao;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class Foto {
 	private Long id;
 
 	@Getter
+	@Column(nullable = false)
 	private String urlFotografia;
 
 	@ManyToOne
