@@ -26,6 +26,7 @@ import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90D
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
 import br.com.airbnb.domain.acomodacao.exception.QuantidadesDeHospedesNaoBateComAcomodacaoException;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
+import br.com.airbnb.domain.acomodacao.reservas.avaliacao.Avaliacao;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,7 +84,6 @@ public class Acomodacao {
 	private String titulo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "foto_id")
 	private List<Foto> fotos;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -99,11 +99,14 @@ public class Acomodacao {
 
 	@Getter
 	private LocalTime horarioCheckOut;
-		
+
+	@OneToMany(mappedBy = "acomodacao", fetch = FetchType.LAZY)
+	private List<Avaliacao> avaliacoes;
+
 	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
 			List<Espaco> espacos, PrecoPernoite precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
 			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
-			List<Reserva> reservas) {
+			List<Reserva> reservas, LocalTime horarioCheckIn, LocalTime horarioCheckOut, List<Avaliacao> avaliacoes) {
 		if (destaques.size() > 2) {
 			throw new NaoEhPossivelCadastrarMaisQueDoisDestaquesException();
 		}
@@ -122,6 +125,9 @@ public class Acomodacao {
 		this.fotos = fotos;
 		this.usuario = usuario;
 		this.reservas = reservas;
+		this.horarioCheckIn = horarioCheckIn;
+		this.horarioCheckOut = horarioCheckOut;
+		this.avaliacoes = avaliacoes;
 	}
 
 	public List<Destaque> getDestaques() {
@@ -161,4 +167,5 @@ public class Acomodacao {
 	private boolean verificaSeDataEhMaiorQueNoventaDias(LocalDateTime data) {
 		return data.isAfter(LocalDateTime.now().plusDays(90));
 	}
+
 }
