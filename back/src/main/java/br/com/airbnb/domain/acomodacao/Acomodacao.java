@@ -2,6 +2,7 @@ package br.com.airbnb.domain.acomodacao;
 
 import java.awt.Point;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
+import br.com.airbnb.domain.acomodacao.exception.QuantidadesDeHospedesNaoBateComAcomodacaoException;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.Getter;
@@ -96,7 +99,7 @@ public class Acomodacao {
 
 	@Getter
 	private LocalTime horarioCheckOut;
-
+		
 	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
 			List<Espaco> espacos, PrecoPernoite precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
 			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
@@ -137,5 +140,25 @@ public class Acomodacao {
 		return new ArrayList<Reserva>(reservas);
 	}
 
-	
+	public void adicionaReserva(Reserva reserva) {
+		if (this.verificaSeDataEhMaiorQueNoventaDias(reserva.getInicioReserva())) {
+			throw new NaoEhPossivelAdicionaReserva90DiasAFrenteException();
+		}
+
+		if (reserva.getQuantidadeHospedes() >= this.getHopedes().getHospedes()) {
+			throw new QuantidadesDeHospedesNaoBateComAcomodacaoException();
+		}
+
+		this.reservas.add(reserva);
+	}
+
+	/**
+	 * Verifica se a data da reserva é maior incrementando em 90 dias a data atual
+	 * 
+	 * @param data
+	 * @return Retorna o resultado da verificação
+	 */
+	private boolean verificaSeDataEhMaiorQueNoventaDias(LocalDateTime data) {
+		return data.isAfter(LocalDateTime.now().plusDays(90));
+	}
 }
