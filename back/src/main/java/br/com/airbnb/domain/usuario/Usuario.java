@@ -21,31 +21,42 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Getter
 	private Long id;
 
 	@Column(nullable = false)
+	@Getter
 	private String primeiroNome;
 	
 	@Column(nullable = false)
+	@Getter
 	private String segundoNome;
 
 	@OneToOne
 	@JoinColumn(name = "foto_id", referencedColumnName = "id")
+	@Getter
 	private Foto foto;
 
 	@Column(unique = true)
+	@Getter
 	private String email;
 	
 	@Column(nullable = false)
+	@Getter
 	private LocalDate dataNascimento;
-
+	
 	private boolean permiteEmailDeMarketing;
 
 	// Flag para verificar se o e-mail do usuário foi confirmado
@@ -53,27 +64,11 @@ public class Usuario implements UserDetails {
 
 	@JsonIgnore
 	@Column(nullable = false)
+	@Getter
 	private String senha;
 
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Acomodacao> acomodacoes;
-	
-	
-	public Usuario() { }
-
-	public Usuario(Long id, String primeiroNome, String segundoNome, Foto foto, String email, LocalDate dataNascimento,
-			boolean permiteEmailDeMarketing, boolean enabled, String senha, List<Acomodacao> acomodacoes) {
-		this.id = id;
-		this.primeiroNome = primeiroNome;
-		this.segundoNome = segundoNome;
-		this.foto = foto;
-		this.email = email;
-		this.dataNascimento = dataNascimento;
-		this.permiteEmailDeMarketing = permiteEmailDeMarketing;
-		this.enabled = enabled;
-		this.senha = senha;
-		this.acomodacoes = acomodacoes;
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -110,44 +105,15 @@ public class Usuario implements UserDetails {
 		return enabled;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
 	public String getNome() {
 		return this.primeiroNome + " " + this.segundoNome;
 	}
 
-	public Foto getFoto() {
-		return foto;
-	}
-
 	public List<Acomodacao> getAcomodacoes() {
-		return acomodacoes;
-	}
-
-	public String getPrimeiroNome() {
-		return primeiroNome;
-	}
-
-	public String getSegundoNome() {
-		return segundoNome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
+		return new ArrayList<Acomodacao>(acomodacoes);
 	}
 
 	public boolean isPermiteEmailDeMarketing() {
 		return permiteEmailDeMarketing;
 	}
-
-	public String getSenha() {
-		return senha;
-	}
-
 }
