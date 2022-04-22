@@ -2,36 +2,24 @@ package br.com.airbnb.domain.acomodacao;
 
 import javax.persistence.Embeddable;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class Hospedes {
+	@Getter
 	private Integer hospedes;
+
+	@Getter
 	private Integer camas;
+
+	@Getter
 	private Integer quartos;
+
+	@Getter
 	private Integer banheiros;
-
-	public Hospedes() { }
-
-	public Hospedes(Integer hospedes, Integer camas, Integer quartos, Integer banheiros) {
-		this.hospedes = hospedes;
-		this.camas = camas;
-		this.quartos = quartos;
-		this.banheiros = banheiros;
-	}
-
-	public Integer getHospedes() {
-		return hospedes;
-	}
-
-	public Integer getCamas() {
-		return camas;
-	}
-
-	public Integer getQuartos() {
-		return quartos;
-	}
-
-	public Integer getBanheiros() {
-		return banheiros;
-	}
 
 }

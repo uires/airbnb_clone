@@ -8,32 +8,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity(name = "foto_acomodacao")
 @Table(name = "foto_acomodacao")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Foto {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Getter
 	private Long id;
+
+	@Getter
 	private String urlFotografia;
 
 	@ManyToOne
 	@JoinColumn(name = "acomodacao_id")
+	@Getter
 	private Acomodacao acomodacao;
-
-	public Foto() { }
-
-	public Foto(Long id, String urlFotografia) {
-		this.id = id;
-		this.urlFotografia = urlFotografia;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getUrlFotografia() {
-		return urlFotografia;
-	}
 
 }
