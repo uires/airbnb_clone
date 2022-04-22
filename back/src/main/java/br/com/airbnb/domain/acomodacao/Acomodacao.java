@@ -41,9 +41,10 @@ public class Acomodacao {
 
 	@Enumerated(EnumType.STRING)
 	@Getter
+	@Column(nullable = false)
 	private TipoLugar tipoLugar;
 
-	@Column(name = "localizacao", columnDefinition = "POINT")
+	@Column(name = "localizacao", columnDefinition = "POINT", nullable = true)
 	@Getter
 	private Point localizacao;
 
@@ -61,7 +62,6 @@ public class Acomodacao {
 	private List<Espaco> espacos;
 
 	@Embedded
-	@Column(nullable = false)
 	@Getter
 	private PrecoPernoite precoPernoite;
 
@@ -95,9 +95,11 @@ public class Acomodacao {
 	private List<Reserva> reservas;
 
 	@Getter
+	@Column(nullable = false)
 	private LocalTime horarioCheckIn;
 
 	@Getter
+	@Column(nullable = false)
 	private LocalTime horarioCheckOut;
 
 	@OneToMany(mappedBy = "acomodacao", fetch = FetchType.LAZY)
