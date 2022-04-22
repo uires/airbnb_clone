@@ -2,6 +2,7 @@ package br.com.airbnb.domain.acomodacao;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import br.com.airbnb.domain.acomodacao.exception.PrecoPernoiteNaoPodeSerMenorQue74ReaisException;
@@ -11,6 +12,7 @@ import lombok.Getter;
 public class PrecoPernoite {
 
 	@Getter
+	@Column(nullable = false)
 	private BigDecimal valor;
 
 	// Flag para verificar se permite desconto de 20% para os três primeiros
