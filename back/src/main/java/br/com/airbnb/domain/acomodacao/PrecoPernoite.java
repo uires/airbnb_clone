@@ -7,8 +7,10 @@ import javax.persistence.Embeddable;
 
 import br.com.airbnb.domain.acomodacao.exception.PrecoPernoiteNaoPodeSerMenorQue74ReaisException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@NoArgsConstructor
 public class PrecoPernoite {
 
 	@Getter
@@ -20,7 +22,7 @@ public class PrecoPernoite {
 	private boolean permiteDescontoPrimeirosTresHospedes;
 
 	public PrecoPernoite(BigDecimal valor, boolean permiteDescontoPrimeirosTresHospides) {
-		if (valor.compareTo(new BigDecimal("74.00")) < 74.00) {
+		if (valor.compareTo(new BigDecimal("74.00")) < 0) {
 			throw new PrecoPernoiteNaoPodeSerMenorQue74ReaisException();
 		}
 

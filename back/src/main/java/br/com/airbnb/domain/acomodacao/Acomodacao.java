@@ -22,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
 import br.com.airbnb.domain.acomodacao.exception.QuantidadesDeHospedesNaoBateComAcomodacaoException;
@@ -70,9 +72,11 @@ public class Acomodacao {
 	private BigDecimal taxaDeServico;
 
 	@Column(nullable = false)
+	@Getter
 	private BigDecimal taxaDeLimpeza;
 
 	@Column(length = 500, nullable = false)
+	@Getter
 	private String descricao;
 
 	@ElementCollection
@@ -84,6 +88,7 @@ public class Acomodacao {
 	private String titulo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<Foto> fotos;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -169,5 +174,17 @@ public class Acomodacao {
 	private boolean verificaSeDataEhMaiorQueNoventaDias(LocalDateTime data) {
 		return data.isAfter(LocalDateTime.now().plusDays(90));
 	}
+
+	@Override
+	public String toString() {
+		return "Acomodacao [id=" + id + ", tipoLugar=" + tipoLugar + ", localizacao=" + localizacao + ", endereco="
+				+ endereco + ", hopedes=" + hopedes + ", espacos=" + espacos + ", precoPernoite=" + precoPernoite
+				+ ", taxaDeServico=" + taxaDeServico + ", taxaDeLimpeza=" + taxaDeLimpeza + ", descricao=" + descricao
+				+ ", destaques=" + destaques + ", titulo=" + titulo + ", fotos=" + fotos + ", usuario=" + usuario
+				+ ", reservas=" + reservas + ", horarioCheckIn=" + horarioCheckIn + ", horarioCheckOut="
+				+ horarioCheckOut + ", avaliacoes=" + avaliacoes + "]";
+	}
+	
+	
 
 }
