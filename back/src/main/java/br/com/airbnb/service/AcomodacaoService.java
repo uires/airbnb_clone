@@ -12,7 +12,7 @@ public class AcomodacaoService {
 	@Autowired
 	private AcomodacaoRepository repository;
 	
-	public void cadastraAcomodacao(Acomodacao acomodacao) {
-		this.repository.save(acomodacao);
+	public Acomodacao cadastraAcomodacao(Acomodacao acomodacao) {
+		return this.repository.save(acomodacao);
 	}
 }
