@@ -62,4 +62,9 @@ public class AcomodacaoService {
 
 		return acomodacao;
 	}
+
+	public Optional<Acomodacao> busca(Long id) {
+		Optional<Acomodacao> acomodacao = this.repository.findById(id);
+		return acomodacao;
+	}
 }
