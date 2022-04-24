@@ -87,7 +87,7 @@ public class Acomodacao {
 	@Getter
 	private String titulo;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "acomodacao")
 	@JsonIgnore
 	private List<Foto> fotos;
 
@@ -175,16 +175,8 @@ public class Acomodacao {
 		return data.isAfter(LocalDateTime.now().plusDays(90));
 	}
 
-	@Override
-	public String toString() {
-		return "Acomodacao [id=" + id + ", tipoLugar=" + tipoLugar + ", localizacao=" + localizacao + ", endereco="
-				+ endereco + ", hopedes=" + hopedes + ", espacos=" + espacos + ", precoPernoite=" + precoPernoite
-				+ ", taxaDeServico=" + taxaDeServico + ", taxaDeLimpeza=" + taxaDeLimpeza + ", descricao=" + descricao
-				+ ", destaques=" + destaques + ", titulo=" + titulo + ", fotos=" + fotos + ", usuario=" + usuario
-				+ ", reservas=" + reservas + ", horarioCheckIn=" + horarioCheckIn + ", horarioCheckOut="
-				+ horarioCheckOut + ", avaliacoes=" + avaliacoes + "]";
+	public void adicionaImagens(List<Foto> fotos) {
+		this.fotos.addAll(fotos);
 	}
-	
-	
 
 }
