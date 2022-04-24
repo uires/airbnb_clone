@@ -2,9 +2,13 @@ package br.com.airbnb.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,12 +27,14 @@ public class AcomodacaoController {
 
 	@Autowired
 	private AcomodacaoService service;
-	
+
+	// Tratamento temporário já que não tenho filtro e nem token para definir o
+	// usuário
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
 	@PostMapping
-	public ResponseEntity<Acomodacao> cadastra(@RequestBody AcomodacaoForm form,
+	public ResponseEntity<Acomodacao> cadastra(@Valid @RequestBody AcomodacaoForm form,
 			UriComponentsBuilder uriComponentsBuilder) {
 		Acomodacao acomodacao = form.converte(usuarioRepository);
 		acomodacao = this.service.cadastraAcomodacao(acomodacao);
@@ -36,8 +42,10 @@ public class AcomodacaoController {
 		return ResponseEntity.created(uri).body(acomodacao);
 	}
 
-	@PostMapping("/upload/{id}")
-	public ResponseEntity<?> upload(@RequestParam("arquivos") MultipartFile[] arquivos) {
-		return null;
+	@PutMapping("/upload/{id}")
+	public ResponseEntity<Acomodacao> upload(@RequestParam("arquivos") MultipartFile[] arquivos,
+			@PathVariable(required = true) Long id) {
+		Acomodacao acomodacao = this.service.cadastraFotos(id, arquivos);
+		return ResponseEntity.ok(acomodacao);
 	}
 }
