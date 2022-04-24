@@ -2,6 +2,7 @@ package br.com.airbnb.domain.acomodacao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,9 +29,11 @@ public class Foto {
 	@Column(nullable = false)
 	private String urlFotografia;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "acomodacao_id")
 	@Getter
 	private Acomodacao acomodacao;
 
+	@Getter
+	private String deletehash;
 }
