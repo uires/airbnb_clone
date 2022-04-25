@@ -22,8 +22,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
 import br.com.airbnb.domain.acomodacao.exception.QuantidadesDeHospedesNaoBateComAcomodacaoException;
@@ -88,7 +86,6 @@ public class Acomodacao {
 	private String titulo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "acomodacao")
-	@JsonIgnore
 	private List<Foto> fotos;
 
 	@ManyToOne(fetch = FetchType.EAGER)
