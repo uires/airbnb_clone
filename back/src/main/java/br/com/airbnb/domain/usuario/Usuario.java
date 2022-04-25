@@ -50,7 +50,7 @@ public class Usuario implements UserDetails {
 	@Getter
 	private Foto foto;
 
-	@Column(unique = true)
+	@Column(unique = true, length = 125)
 	@Getter
 	private String email;
 
