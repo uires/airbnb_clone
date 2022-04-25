@@ -91,7 +91,7 @@ public class Acomodacao {
 	@JsonIgnore
 	private List<Foto> fotos;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id")
 	@Getter
 	private Usuario usuario;
