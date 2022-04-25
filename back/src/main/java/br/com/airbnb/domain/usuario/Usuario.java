@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
@@ -39,7 +40,7 @@ public class Usuario implements UserDetails {
 	@Column(nullable = false)
 	@Getter
 	private String primeiroNome;
-	
+
 	@Column(nullable = false)
 	@Getter
 	private String segundoNome;
@@ -52,22 +53,23 @@ public class Usuario implements UserDetails {
 	@Column(unique = true)
 	@Getter
 	private String email;
-	
+
 	@Column(nullable = false)
 	@Getter
 	private LocalDate dataNascimento;
-	
+
 	private boolean permiteEmailDeMarketing;
 
 	// Flag para verificar se o e-mail do usuário foi confirmado
 	private boolean enabled = false;
 
-	@JsonIgnore
 	@Column(nullable = false)
 	@Getter
+	@JsonIgnore
 	private String senha;
 
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@JsonBackReference
 	private List<Acomodacao> acomodacoes;
 
 	@Override
@@ -76,6 +78,7 @@ public class Usuario implements UserDetails {
 	}
 
 	@Override
+	@JsonIgnore
 	public String getPassword() {
 		return senha;
 	}
