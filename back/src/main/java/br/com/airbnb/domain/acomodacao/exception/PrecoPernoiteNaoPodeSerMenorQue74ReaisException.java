@@ -4,11 +4,7 @@ public class PrecoPernoiteNaoPodeSerMenorQue74ReaisException extends IllegalArgu
 
 	private static final long serialVersionUID = 1L;
 
-	private String message;
-
-	public PrecoPernoiteNaoPodeSerMenorQue74ReaisException() {
-		super("Preço do pernoite não pode ser menor que R$ 74,00");
-	}
+	private final String message = "Preço do pernoite não pode ser menor que R$ 74,00";
 
 	@Override
 	public String getMessage() {
