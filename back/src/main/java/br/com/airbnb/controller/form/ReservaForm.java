@@ -14,11 +14,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReservaForm {
 	private LocalDateTime dataCriacaoReserva = LocalDateTime.now();
-	
+
 	@NotNull
 	private LocalDateTime fimReserva;
 	@NotNull
 	private LocalDateTime inicioReserva;
 	@NotNull
 	private Integer quantidadeHospedes;
+
+	public Reserva converte() {
+		return new Reserva(null, inicioReserva, fimReserva, dataCriacaoReserva, null, null, false, quantidadeHospedes,
+				null, null);
+	}
 }
