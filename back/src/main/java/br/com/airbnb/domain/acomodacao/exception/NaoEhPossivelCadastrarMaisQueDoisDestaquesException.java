@@ -4,11 +4,7 @@ public class NaoEhPossivelCadastrarMaisQueDoisDestaquesException extends Illegal
 
 	private static final long serialVersionUID = 3809285311915362220L;
 
-	private String message;
-
-	public NaoEhPossivelCadastrarMaisQueDoisDestaquesException() {
-		super("Não é possível cadastrar mais do que dois destaques para um acomodação");
-	}
+	private final String message = "Não é possível cadastrar mais do que dois destaques para um acomodação";
 
 	@Override
 	public String getMessage() {

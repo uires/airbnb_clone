@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +25,8 @@ import javax.persistence.OneToOne;
 
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
+import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarUmaReservaNoPassadoException;
+import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelReservaSobreporOutraException;
 import br.com.airbnb.domain.acomodacao.exception.QuantidadesDeHospedesNaoBateComAcomodacaoException;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.acomodacao.reservas.avaliacao.Avaliacao;
@@ -150,6 +153,11 @@ public class Acomodacao {
 		return new ArrayList<Reserva>(reservas);
 	}
 
+	/**
+	 * Adiciona uma reserva a acomodação 
+	 * 
+	 * @param reserva
+	 */
 	public void adicionaReserva(Reserva reserva) {
 		if (this.verificaSeDataEhMaiorQueNoventaDias(reserva.getInicioReserva())) {
 			throw new NaoEhPossivelAdicionaReserva90DiasAFrenteException();
@@ -157,6 +165,25 @@ public class Acomodacao {
 
 		if (reserva.getQuantidadeHospedes() >= this.getHopedes().getHospedes()) {
 			throw new QuantidadesDeHospedesNaoBateComAcomodacaoException();
+		}
+
+		List<Reserva> listaReserva = this.getReservas().stream().filter(reservaAcomodacao -> {
+			return reservaAcomodacao.getInicioReserva().getYear() == reserva.getInicioReserva().getYear()
+					&& !reservaAcomodacao.isReservaCancelada();
+		}).collect(Collectors.toList());
+
+		listaReserva.forEach(reservaAcomodacao -> {
+			if (this.verificaSeAReservaSobrepoemDataOutra(reserva, reservaAcomodacao)) {
+				throw new NaoEhPossivelReservaSobreporOutraException();
+			}
+		});
+
+		if (reserva.getInicioReserva().isBefore(LocalDateTime.now())) {
+			throw new NaoEhPossivelCadastrarUmaReservaNoPassadoException();
+		}
+
+		if (reserva.getFimReserva().isBefore(reserva.getInicioReserva())) {
+			throw new IllegalArgumentException("Não é possível cadastrar uma reserva com esse intervalo de data");
 		}
 
 		this.reservas.add(reserva);
@@ -170,6 +197,19 @@ public class Acomodacao {
 	 */
 	private boolean verificaSeDataEhMaiorQueNoventaDias(LocalDateTime data) {
 		return data.isAfter(LocalDateTime.now().plusDays(90));
+	}
+
+	/**
+	 * Verifica se a data da reserva para ser cadastra sobrepõem a data de alguma
+	 * reserva já cadastrada
+	 * 
+	 * @param reserva
+	 * @param reservaCadastrada
+	 * @return retorno da verificação
+	 */
+	private boolean verificaSeAReservaSobrepoemDataOutra(Reserva reserva, Reserva reservaCadastrada) {
+		return reserva.getInicioReserva().isBefore(reservaCadastrada.getFimReserva())
+				&& reservaCadastrada.getInicioReserva().isBefore(reserva.getFimReserva());
 	}
 
 	public void adicionaImagens(List<Foto> fotos) {
