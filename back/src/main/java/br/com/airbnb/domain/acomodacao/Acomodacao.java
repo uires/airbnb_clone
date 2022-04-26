@@ -154,7 +154,7 @@ public class Acomodacao {
 	}
 
 	/**
-	 * Adiciona uma reserva a acomodação 
+	 * Adiciona uma reserva a acomodação
 	 * 
 	 * @param reserva
 	 */
