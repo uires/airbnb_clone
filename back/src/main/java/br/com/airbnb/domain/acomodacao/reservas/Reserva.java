@@ -2,6 +2,7 @@ package br.com.airbnb.domain.acomodacao.reservas;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -59,6 +60,17 @@ public class Reserva {
 
 	public boolean isReservaCancelada() {
 		return reservaCancelada;
+	}
+
+	/**
+	 * Calcula o total da reserva
+	 */
+	public void calculaTotal() {
+		long quantidadeDiasReserva = this.getInicioReserva().until(this.getFimReserva(), ChronoUnit.DAYS);
+		BigDecimal valorTotalPernoite = this.getAcomodacao().getPrecoPernoite().getValor()
+				.multiply(new BigDecimal(quantidadeDiasReserva));
+
+		this.valorTotal.add(valorTotalPernoite);
 	}
 
 }
