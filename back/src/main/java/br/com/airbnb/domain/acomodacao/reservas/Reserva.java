@@ -1,6 +1,7 @@
 package br.com.airbnb.domain.acomodacao.reservas;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -71,6 +72,15 @@ public class Reserva {
 				.multiply(new BigDecimal(quantidadeDiasReserva));
 
 		this.valorTotal.add(valorTotalPernoite);
+	}
+
+	/**
+	 * Subtrai do valor total a taxa de desconto calculada
+	 * 
+	 * @param taxaDesconto
+	 */
+	public void aplicaDesconto(BigDecimal taxaDesconto) {
+		this.valorTotal = this.getValorTotal().subtract(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
 	}
 
 }
