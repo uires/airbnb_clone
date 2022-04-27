@@ -30,6 +30,7 @@ import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelReservaSobreporOut
 import br.com.airbnb.domain.acomodacao.exception.QuantidadesDeHospedesNaoBateComAcomodacaoException;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.acomodacao.reservas.avaliacao.Avaliacao;
+import br.com.airbnb.domain.acomodacao.reservas.desconto.CalculadoraDesconto;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -168,15 +169,14 @@ public class Acomodacao {
 		}
 
 		List<Reserva> listaReserva = this.getReservas().stream().filter(reservaAcomodacao -> {
-			return reservaAcomodacao.getInicioReserva().getYear() == reserva.getInicioReserva().getYear()
-					&& !reservaAcomodacao.isReservaCancelada();
+			return !reservaAcomodacao.isReservaCancelada();
 		}).collect(Collectors.toList());
 
-		listaReserva.forEach(reservaAcomodacao -> {
+		for (Reserva reservaAcomodacao : listaReserva) {
 			if (this.verificaSeAReservaSobrepoemDataOutra(reserva, reservaAcomodacao)) {
 				throw new NaoEhPossivelReservaSobreporOutraException();
 			}
-		});
+		}
 
 		if (reserva.getInicioReserva().isBefore(LocalDateTime.now())) {
 			throw new NaoEhPossivelCadastrarUmaReservaNoPassadoException();
@@ -185,6 +185,10 @@ public class Acomodacao {
 		if (reserva.getFimReserva().isBefore(reserva.getInicioReserva())) {
 			throw new IllegalArgumentException("Não é possível cadastrar uma reserva com esse intervalo de data");
 		}
+
+		// Executa lógica de desconto para reserva
+		CalculadoraDesconto calculadoraDesconto = new CalculadoraDesconto();
+		reserva = calculadoraDesconto.calculaDesconto(reserva);
 
 		this.reservas.add(reserva);
 	}
