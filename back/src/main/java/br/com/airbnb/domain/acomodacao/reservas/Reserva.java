@@ -71,7 +71,7 @@ public class Reserva {
 		BigDecimal valorTotalPernoite = this.getAcomodacao().getPrecoPernoite().getValor()
 				.multiply(new BigDecimal(quantidadeDiasReserva));
 
-		this.valorTotal.add(valorTotalPernoite);
+		this.valorTotal = this.valorTotal.add(valorTotalPernoite);
 	}
 
 	/**
@@ -83,4 +83,13 @@ public class Reserva {
 		this.valorTotal = this.getValorTotal().subtract(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
 	}
 
+	@Override
+	public String toString() {
+		return "Reserva [id=" + id + ", inicioReserva=" + inicioReserva + ", fimReserva=" + fimReserva
+				+ ", dataCriacaoReserva=" + dataCriacaoReserva + ", descontoSemanal=" + descontoSemanal
+				+ ", valorTotal=" + valorTotal + ", reservaCancelada=" + reservaCancelada + ", quantidadeHospedes="
+				+ quantidadeHospedes + ", hospede=" + hospede + ", acomodacao=" + acomodacao + "]";
+	}
+
+	
 }

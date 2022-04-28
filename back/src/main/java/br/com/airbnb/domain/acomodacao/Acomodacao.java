@@ -23,6 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarUmaReservaNoPassadoException;
@@ -98,6 +100,7 @@ public class Acomodacao {
 	private Usuario usuario;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acomodacao")
+	@JsonBackReference
 	private List<Reserva> reservas;
 
 	@Getter
@@ -185,7 +188,8 @@ public class Acomodacao {
 		if (reserva.getFimReserva().isBefore(reserva.getInicioReserva())) {
 			throw new IllegalArgumentException("Não é possível cadastrar uma reserva com esse intervalo de data");
 		}
-
+		
+		reserva.calculaTotal();
 		// Executa lógica de desconto para reserva
 		CalculadoraDesconto calculadoraDesconto = new CalculadoraDesconto();
 		reserva = calculadoraDesconto.calculaDesconto(reserva);
