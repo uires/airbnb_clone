@@ -164,7 +164,7 @@ public class Acomodacao {
 			throw new NaoEhPossivelAdicionaReserva90DiasAFrenteException();
 		}
 
-		if (reserva.getQuantidadeHospedes() >= this.getHopedes().getHospedes()) {
+		if (reserva.getQuantidadeHospedes() > this.getHopedes().getHospedes()) {
 			throw new QuantidadesDeHospedesNaoBateComAcomodacaoException();
 		}
 
