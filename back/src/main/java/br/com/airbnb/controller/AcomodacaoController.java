@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.airbnb.controller.exception.EntityNotFoundException;
 import br.com.airbnb.controller.form.AcomodacaoForm;
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.repository.UsuarioRepository;
@@ -55,7 +56,7 @@ public class AcomodacaoController {
 	public ResponseEntity<Acomodacao> busca(@PathVariable(required = true) Long id) {
 		Optional<Acomodacao> optional = this.service.busca(id);
 		if (!optional.isPresent()) {
-			return ResponseEntity.notFound().build();
+			throw new EntityNotFoundException();
 		}
 
 		return ResponseEntity.ok(optional.get());
