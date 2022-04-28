@@ -1,5 +1,6 @@
 package br.com.airbnb.controller.form;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.repository.UsuarioRepository;
@@ -27,24 +29,24 @@ public class ReservaForm {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@JsonFormat(pattern = "YYYY-MM-dd HH:mm")
 	private LocalDateTime fimReserva;
-	
+
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@JsonFormat(pattern = "YYYY-MM-dd HH:mm")
 	private LocalDateTime inicioReserva;
-	
+
 	@NotNull
 	private Integer quantidadeHospedes;
 
-	public Reserva converte(UsuarioRepository usuarioRepository) {
+	public Reserva converte(UsuarioRepository usuarioRepository, Acomodacao acomodacao) {
 		Optional<Usuario> usuario = usuarioRepository.findById(1L);
 
 		if (!usuario.isPresent()) {
 			throw new IllegalArgumentException("");
 		}
 
-		return new Reserva(null, inicioReserva, fimReserva, dataCriacaoReserva, null, null, false, quantidadeHospedes,
-				usuario.get(), null);
+		return new Reserva(null, inicioReserva, fimReserva, dataCriacaoReserva, BigDecimal.ZERO, BigDecimal.ZERO, false,
+				quantidadeHospedes, usuario.get(), acomodacao);
 	}
-	
+
 }
