@@ -69,7 +69,7 @@ public class Acomodacao {
 
 	@Embedded
 	@Getter
-	private PrecoPernoite precoPernoite;
+	private Precificacao precoPernoite;
 
 	@Column(nullable = false)
 	@Getter
@@ -113,11 +113,15 @@ public class Acomodacao {
 
 	@OneToMany(mappedBy = "acomodacao", fetch = FetchType.LAZY)
 	private List<Avaliacao> avaliacoes;
+	
+	@Getter
+	private boolean permiteAnimais;
 
 	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
-			List<Espaco> espacos, PrecoPernoite precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
+			List<Espaco> espacos, Precificacao precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
 			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
-			List<Reserva> reservas, LocalTime horarioCheckIn, LocalTime horarioCheckOut, List<Avaliacao> avaliacoes) {
+			List<Reserva> reservas, LocalTime horarioCheckIn, LocalTime horarioCheckOut, List<Avaliacao> avaliacoes,
+			boolean permiteAnimais) {
 		if (destaques.size() > 2) {
 			throw new NaoEhPossivelCadastrarMaisQueDoisDestaquesException();
 		}
@@ -139,6 +143,7 @@ public class Acomodacao {
 		this.horarioCheckIn = horarioCheckIn;
 		this.horarioCheckOut = horarioCheckOut;
 		this.avaliacoes = avaliacoes;
+		this.permiteAnimais = permiteAnimais;
 	}
 
 	public List<Destaque> getDestaques() {
