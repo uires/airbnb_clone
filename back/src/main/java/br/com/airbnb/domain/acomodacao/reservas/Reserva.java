@@ -67,11 +67,20 @@ public class Reserva {
 	 * Calcula o total da reserva
 	 */
 	public void calculaTotal() {
-		long quantidadeDiasReserva = this.getInicioReserva().until(this.getFimReserva(), ChronoUnit.DAYS);
-		BigDecimal valorTotalPernoite = this.getAcomodacao().getPrecoPernoite().getValor()
-				.multiply(new BigDecimal(quantidadeDiasReserva));
+		BigDecimal valorTotal = null;
 
-		this.valorTotal = this.valorTotal.add(valorTotalPernoite);
+		if (this.getAcomodacao().getPrecificacao().getValor() != null) {
+			long quantidadeDiasReserva = this.getInicioReserva().until(this.getFimReserva(), ChronoUnit.DAYS);
+			valorTotal = this.getAcomodacao().getPrecificacao().getValor()
+					.multiply(new BigDecimal(quantidadeDiasReserva));
+		}
+
+		if (this.getAcomodacao().getPrecificacao().getValorMensal() != null) {
+			long quantidadeMeses = ChronoUnit.MONTHS.between(this.getInicioReserva(), this.getFimReserva());
+			valorTotal = this.getAcomodacao().getPrecificacao().getValor().multiply(new BigDecimal(quantidadeMeses));
+		}
+
+		this.valorTotal = this.valorTotal.add(valorTotal);
 	}
 
 	/**
@@ -91,5 +100,4 @@ public class Reserva {
 				+ quantidadeHospedes + ", hospede=" + hospede + ", acomodacao=" + acomodacao + "]";
 	}
 
-	
 }
