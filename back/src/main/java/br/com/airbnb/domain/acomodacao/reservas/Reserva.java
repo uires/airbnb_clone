@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -48,7 +49,8 @@ public class Reserva {
 	private boolean reservaCancelada = false;
 
 	@Getter
-	private Integer quantidadeHospedes;
+	@Embedded
+	private Hospedes hospedes;
 
 	@OneToOne
 	@JoinColumn(name = "hospede_id", referencedColumnName = "id")
@@ -90,14 +92,6 @@ public class Reserva {
 	 */
 	public void aplicaDesconto(BigDecimal taxaDesconto) {
 		this.valorTotal = this.getValorTotal().subtract(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
-	}
-
-	@Override
-	public String toString() {
-		return "Reserva [id=" + id + ", inicioReserva=" + inicioReserva + ", fimReserva=" + fimReserva
-				+ ", dataCriacaoReserva=" + dataCriacaoReserva + ", descontoSemanal=" + descontoSemanal
-				+ ", valorTotal=" + valorTotal + ", reservaCancelada=" + reservaCancelada + ", quantidadeHospedes="
-				+ quantidadeHospedes + ", hospede=" + hospede + ", acomodacao=" + acomodacao + "]";
 	}
 
 }
