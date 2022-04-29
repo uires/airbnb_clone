@@ -12,7 +12,7 @@ import br.com.airbnb.domain.acomodacao.Destaque;
 import br.com.airbnb.domain.acomodacao.Endereco;
 import br.com.airbnb.domain.acomodacao.Espaco;
 import br.com.airbnb.domain.acomodacao.Hospedes;
-import br.com.airbnb.domain.acomodacao.PrecoPernoite;
+import br.com.airbnb.domain.acomodacao.Precificacao;
 import br.com.airbnb.domain.acomodacao.TipoLugar;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.repository.UsuarioRepository;
@@ -39,9 +39,18 @@ public class AcomodacaoForm {
 	private Integer quartos;
 	@NotNull
 	private Integer banheiros;
+	@NotNull
+	private Integer criancas;
+	@NotNull
+	private Integer bebes;
+	@NotNull
+	private Integer animais;
 
 	@NotNull
 	private BigDecimal precoNoite;
+
+	@NotNull
+	private BigDecimal precoMensal;
 
 	@NotNull
 	private boolean permiteDescontoTresPrimeirosHospedes;
@@ -75,6 +84,8 @@ public class AcomodacaoForm {
 	private String cidade;
 	private String codigoPostal;
 
+	private boolean permiteAnimais;
+
 	public Acomodacao converte(UsuarioRepository usuarioRepository) {
 		Optional<Usuario> usuario = usuarioRepository.findById(1L);
 
@@ -83,11 +94,14 @@ public class AcomodacaoForm {
 		}
 
 		Endereco endereco = new Endereco(null, rua, estado, cidade, null, codigoPostal);
-		Hospedes hospedes = new Hospedes(this.hospedes, this.camas, this.quartos, this.banheiros);
-		PrecoPernoite precoPernoite = new PrecoPernoite(precoNoite, permiteDescontoTresPrimeirosHospedes);
+		
+		Hospedes hospedes = new Hospedes(this.hospedes, this.camas, this.quartos, this.banheiros, this.criancas,
+				this.bebes, this.animais);
+
+		Precificacao precoPernoite = new Precificacao(precoNoite, precoMensal, permiteDescontoTresPrimeirosHospedes);
 		return new Acomodacao(null, lugar, null, endereco, hospedes, espacos, precoPernoite, taxaDeServico,
 				taxaDeLimpeza, descricao, destaques, titulo, null, usuario.get(), null, horarioCheckIn, horarioCheckOut,
-				null);
+				null, this.permiteAnimais);
 	}
 
 }

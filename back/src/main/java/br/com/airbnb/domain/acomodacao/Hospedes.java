@@ -27,4 +27,18 @@ public class Hospedes {
 	@Column(nullable = false)
 	private Integer banheiros;
 
+	// 2 - 12
+	@Getter
+	@Column(nullable = false)
+	private Integer criancas;
+
+	// menor que 2
+	@Getter
+	@Column(nullable = false)
+	private Integer bebes;
+
+	@Getter
+	@Column(nullable = false)
+	private Integer animais;
+
 }
