@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 
 /**
- * Define o desconto de 0.1% para cada semana que o hóspede
+ * Define o desconto de 0.1% para cada semana de reserva
  * 
  * @author uires
  *
