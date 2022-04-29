@@ -20,7 +20,7 @@ public class DescontoTresPrimeirosHospedes extends Desconto {
 
 	@Override
 	public BigDecimal calcular(Reserva reserva) {
-		if (reserva.getAcomodacao().getPrecoPernoite().isPermiteDescontoPrimeirosTresHospides()
+		if (reserva.getAcomodacao().getPrecificacao().isPermiteDescontoPrimeirosTresHospides()
 				&& reserva.getAcomodacao().getReservas().size() <= 2) {
 
 			BigDecimal valorTotal = reserva.getValorTotal();

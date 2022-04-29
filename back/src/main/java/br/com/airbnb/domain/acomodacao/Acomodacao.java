@@ -69,7 +69,7 @@ public class Acomodacao {
 
 	@Embedded
 	@Getter
-	private Precificacao precoPernoite;
+	private Precificacao precificacao;
 
 	@Column(nullable = false)
 	@Getter
@@ -113,12 +113,12 @@ public class Acomodacao {
 
 	@OneToMany(mappedBy = "acomodacao", fetch = FetchType.LAZY)
 	private List<Avaliacao> avaliacoes;
-	
+
 	@Getter
 	private boolean permiteAnimais;
 
 	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
-			List<Espaco> espacos, Precificacao precoPernoite, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
+			List<Espaco> espacos, Precificacao precificacao, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
 			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
 			List<Reserva> reservas, LocalTime horarioCheckIn, LocalTime horarioCheckOut, List<Avaliacao> avaliacoes,
 			boolean permiteAnimais) {
@@ -131,7 +131,7 @@ public class Acomodacao {
 		this.endereco = endereco;
 		this.hopedes = hopedes;
 		this.espacos = espacos;
-		this.precoPernoite = precoPernoite;
+		this.precificacao = precificacao;
 		this.taxaDeServico = taxaDeServico;
 		this.taxaDeLimpeza = taxaDeLimpeza;
 		this.descricao = descricao;
@@ -193,7 +193,7 @@ public class Acomodacao {
 		if (reserva.getFimReserva().isBefore(reserva.getInicioReserva())) {
 			throw new IllegalArgumentException("Não é possível cadastrar uma reserva com esse intervalo de data");
 		}
-		
+
 		reserva.calculaTotal();
 		// Executa lógica de desconto para reserva
 		CalculadoraDesconto calculadoraDesconto = new CalculadoraDesconto();
