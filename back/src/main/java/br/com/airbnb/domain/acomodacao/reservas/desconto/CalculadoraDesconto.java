@@ -11,7 +11,8 @@ import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 public class CalculadoraDesconto {
 
 	public Reserva calculaDesconto(Reserva reserva) {
-		Desconto desconto = new DescontoTresPrimeirosHospedes(new DescontoPorSemana(new FimCadeia()));
+		Desconto desconto = new DescontoTresPrimeirosHospedes(
+				new DescontoPorSemana(new DescontoPorMes(new FimCadeia())));
 		reserva.aplicaDesconto(desconto.calcular(reserva));
 
 		return reserva;
