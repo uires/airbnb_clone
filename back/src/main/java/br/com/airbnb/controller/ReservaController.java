@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,8 @@ public class ReservaController {
 	private UsuarioRepository repository;
 
 	@PostMapping("/{id}")
-	public ResponseEntity<?> cadastrar(@RequestBody @Valid ReservaForm form, @PathVariable(required = true) Long id) {
+	public ResponseEntity<Reserva> cadastrar(@RequestBody @Valid ReservaForm form,
+			@PathVariable(required = true) Long id) {
 		Optional<Acomodacao> acomodacaoOptional = acomodacaoService.busca(id);
 		if (!acomodacaoOptional.isPresent()) {
 			throw new EntityNotFoundException();
@@ -46,4 +48,16 @@ public class ReservaController {
 
 		return ResponseEntity.ok(reserva);
 	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Reserva> cancela(@PathVariable(required = true) Long id) {
+		Optional<Reserva> optional = this.reservaService.busca(id);
+		if (!optional.isPresent()) {
+			throw new EntityNotFoundException();
+		}
+
+		Reserva reserva = this.reservaService.cancelaReserva(optional.get());
+		return ResponseEntity.ok(reserva);
+	}
+
 }
