@@ -2,6 +2,8 @@ package br.com.airbnb.controller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,7 @@ public class ReservaController {
 	private UsuarioRepository repository;
 
 	@PostMapping("/{id}")
-	public ResponseEntity<?> cadastrar(@RequestBody ReservaForm form, @PathVariable(required = true) Long id) {
+	public ResponseEntity<?> cadastrar(@RequestBody @Valid ReservaForm form, @PathVariable(required = true) Long id) {
 		Optional<Acomodacao> acomodacaoOptional = acomodacaoService.busca(id);
 		if (!acomodacaoOptional.isPresent()) {
 			throw new EntityNotFoundException();
