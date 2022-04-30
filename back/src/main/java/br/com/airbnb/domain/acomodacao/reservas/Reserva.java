@@ -42,7 +42,7 @@ public class Reserva {
 	private LocalDateTime dataCriacaoReserva;
 
 	@Getter
-	private BigDecimal descontoSemanal;
+	private BigDecimal desconto;
 
 	@Getter
 	private BigDecimal valorTotal;
@@ -91,16 +91,9 @@ public class Reserva {
 	 * 
 	 * @param taxaDesconto
 	 */
-	public void aplicaDesconto(BigDecimal taxaDesconto) {
-		this.valorTotal = this.getValorTotal().subtract(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
-	}
-
-	@Override
-	public String toString() {
-		return "Reserva [id=" + id + ", inicioReserva=" + inicioReserva + ", fimReserva=" + fimReserva
-				+ ", dataCriacaoReserva=" + dataCriacaoReserva + ", descontoSemanal=" + descontoSemanal
-				+ ", valorTotal=" + valorTotal + ", reservaCancelada=" + reservaCancelada + ", hospedes=" + hospedes
-				+ ", hospede=" + hospede + ", acomodacao=" + acomodacao + "]";
+	public void aplicaDesconto(BigDecimal totalComReajuste) {
+		this.desconto = totalComReajuste.setScale(2, RoundingMode.HALF_UP);
+		this.valorTotal = this.getValorTotal().subtract(totalComReajuste).setScale(2, RoundingMode.HALF_UP);
 	}
 
 }

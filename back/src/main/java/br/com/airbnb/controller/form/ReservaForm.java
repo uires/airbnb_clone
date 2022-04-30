@@ -24,7 +24,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ReservaForm {
-	private LocalDateTime dataCriacaoReserva = LocalDateTime.now();
 
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE_TIME)
@@ -57,7 +56,7 @@ public class ReservaForm {
 
 		Hospedes hospedes = new Hospedes(adultos, criancas, bebes, animais);
 
-		return new Reserva(null, inicioReserva, fimReserva, dataCriacaoReserva, BigDecimal.ZERO, BigDecimal.ZERO, false,
+		return new Reserva(null, inicioReserva, fimReserva, LocalDateTime.now(), BigDecimal.ZERO, BigDecimal.ZERO, false,
 				hospedes, usuario.get(), acomodacao);
 	}
 
