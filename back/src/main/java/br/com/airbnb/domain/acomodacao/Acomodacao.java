@@ -40,6 +40,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class Acomodacao {
+
 	@Id
 	@GeneratedValue()
 	@Getter
@@ -117,11 +118,18 @@ public class Acomodacao {
 	@Getter
 	private boolean permiteAnimais;
 
+	@Embedded
+	@Getter
+	private QuantidadesComodos quantidadesComodos;
+
+	@Column(nullable = false)
+	private Integer camas;
+
 	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
 			List<Espaco> espacos, Precificacao precificacao, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
 			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
 			List<Reserva> reservas, LocalTime horarioCheckIn, LocalTime horarioCheckOut, List<Avaliacao> avaliacoes,
-			boolean permiteAnimais) {
+			boolean permiteAnimais, QuantidadesComodos quantidadesComodos, Integer camas) {
 		if (destaques.size() > 2) {
 			throw new NaoEhPossivelCadastrarMaisQueDoisDestaquesException();
 		}
@@ -144,6 +152,8 @@ public class Acomodacao {
 		this.horarioCheckOut = horarioCheckOut;
 		this.avaliacoes = avaliacoes;
 		this.permiteAnimais = permiteAnimais;
+		this.quantidadesComodos = quantidadesComodos;
+		this.camas = camas;
 	}
 
 	public List<Destaque> getDestaques() {
@@ -172,7 +182,7 @@ public class Acomodacao {
 			throw new NaoEhPossivelAdicionaReserva90DiasAFrenteException();
 		}
 
-		if (reserva.getQuantidadeHospedes() > this.getHopedes().getHospedes()) {
+		if (reserva.getHospedes().getAdultos() > this.getHopedes().getAdultos()) {
 			throw new QuantidadesDeHospedesNaoBateComAcomodacaoException();
 		}
 

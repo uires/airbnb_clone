@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
+import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.repository.UsuarioRepository;
@@ -36,7 +37,16 @@ public class ReservaForm {
 	private LocalDateTime inicioReserva;
 
 	@NotNull
-	private Integer quantidadeHospedes;
+	private Integer adultos;
+
+	@NotNull
+	private Integer criancas;
+
+	@NotNull
+	private Integer bebes;
+
+	@NotNull
+	private Integer animais;
 
 	public Reserva converte(UsuarioRepository usuarioRepository, Acomodacao acomodacao) {
 		Optional<Usuario> usuario = usuarioRepository.findById(1L);
@@ -45,8 +55,10 @@ public class ReservaForm {
 			throw new IllegalArgumentException("");
 		}
 
+		Hospedes hospedes = new Hospedes(adultos, criancas, bebes, animais);
+
 		return new Reserva(null, inicioReserva, fimReserva, dataCriacaoReserva, BigDecimal.ZERO, BigDecimal.ZERO, false,
-				quantidadeHospedes, usuario.get(), acomodacao);
+				hospedes, usuario.get(), acomodacao);
 	}
 
 }

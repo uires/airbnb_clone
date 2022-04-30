@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
+import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -92,6 +93,14 @@ public class Reserva {
 	 */
 	public void aplicaDesconto(BigDecimal taxaDesconto) {
 		this.valorTotal = this.getValorTotal().subtract(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
+	}
+
+	@Override
+	public String toString() {
+		return "Reserva [id=" + id + ", inicioReserva=" + inicioReserva + ", fimReserva=" + fimReserva
+				+ ", dataCriacaoReserva=" + dataCriacaoReserva + ", descontoSemanal=" + descontoSemanal
+				+ ", valorTotal=" + valorTotal + ", reservaCancelada=" + reservaCancelada + ", hospedes=" + hospedes
+				+ ", hospede=" + hospede + ", acomodacao=" + acomodacao + "]";
 	}
 
 }

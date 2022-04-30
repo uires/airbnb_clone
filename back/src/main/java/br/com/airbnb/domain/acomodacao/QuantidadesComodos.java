@@ -6,30 +6,17 @@ import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Hospedes {
+public class QuantidadesComodos {
 
-	@Getter
 	@Column(nullable = false)
-	private Integer adultos;
-
 	@Getter
-	@Column(nullable = false)
-	private Integer criancas;
+	private Integer quartos;
 
+	@Column(nullable = false)
 	@Getter
-	@Column(nullable = false)
-	private Integer bebes;
-
-	@Getter
-	@Column(nullable = false)
-	private Integer animais;
-	
-	
-
+	private Integer banheiros;
 }
