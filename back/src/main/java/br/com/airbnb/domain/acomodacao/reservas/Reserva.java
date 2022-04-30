@@ -91,9 +91,9 @@ public class Reserva {
 	 * 
 	 * @param taxaDesconto
 	 */
-	public void aplicaDesconto(BigDecimal totalComReajuste) {
-		this.desconto = totalComReajuste.setScale(2, RoundingMode.HALF_UP);
-		this.valorTotal = this.getValorTotal().subtract(totalComReajuste).setScale(2, RoundingMode.HALF_UP);
+	public void aplicaDesconto(BigDecimal taxaDesconto) {
+		this.desconto = taxaDesconto;
+		this.valorTotal = this.getValorTotal().subtract(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
 	}
 
 }

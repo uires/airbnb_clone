@@ -25,8 +25,7 @@ public class DescontoTresPrimeirosHospedes extends Desconto {
 				&& reserva.getAcomodacao().getReservas().size() <= 2) {
 
 			BigDecimal valorTotal = reserva.getValorTotal();
-			return valorTotal.subtract(valorTotal.multiply(new BigDecimal(this.TAXA_DESCONTO))).setScale(2,
-					RoundingMode.HALF_UP);
+			return valorTotal.multiply(new BigDecimal(this.TAXA_DESCONTO)).setScale(2, RoundingMode.HALF_UP);
 		}
 
 		return this.proximo.calcular(reserva);
