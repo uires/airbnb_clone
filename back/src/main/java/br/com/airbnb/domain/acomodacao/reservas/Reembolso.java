@@ -11,8 +11,10 @@ import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 public class Reembolso {
 
@@ -31,4 +33,9 @@ public class Reembolso {
 
 	@OneToOne(mappedBy = "reembolso")
 	private Reserva reserva;
+
+	public void processa() {
+		this.processado = true;
+		this.dataProcessamento = LocalDateTime.now();
+	}
 }
