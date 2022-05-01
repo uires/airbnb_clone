@@ -47,6 +47,8 @@ public class ReservaForm {
 	@NotNull
 	private Integer animais;
 
+	private String informacoes;
+
 	public Reserva converte(UsuarioRepository usuarioRepository, Acomodacao acomodacao) {
 		Optional<Usuario> usuario = usuarioRepository.findById(1L);
 
@@ -55,9 +57,9 @@ public class ReservaForm {
 		}
 
 		Hospedes hospedes = new Hospedes(adultos, criancas, bebes, animais);
-
-		return new Reserva(null, inicioReserva, fimReserva, LocalDateTime.now(), BigDecimal.ZERO, BigDecimal.ZERO, false,
-				hospedes, usuario.get(), acomodacao);
+		return new Reserva(null, inicioReserva, fimReserva, LocalDateTime.now(), BigDecimal.ZERO, BigDecimal.ZERO,
+				false, hospedes, usuario.get(), acomodacao, informacoes, false, null, acomodacao.getTaxaDeServico(),
+				null, null);
 	}
 
 }
