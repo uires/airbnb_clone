@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
@@ -76,13 +78,13 @@ public class Reserva {
 
 	@Getter
 	private BigDecimal taxaServico;
-	
+
 	@Getter
 	private LocalDateTime dataCancelamento;
 
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(referencedColumnName = "id", name = "reembolso_id")
+	@JsonIgnore
 	private Reembolso reembolso;
 
 	public boolean isReservaCancelada() {
@@ -131,15 +133,17 @@ public class Reserva {
 			throw new ImpossibilidadeCancelarException();
 		}
 
+		long horas = ChronoUnit.HOURS.between(this.getDataCriacaoReserva(), LocalDateTime.now());
+
 		// Até 48 horas o reembolso é completo, caso intervalo de
-		if (ChronoUnit.HOURS.between(this.getDataCriacaoReserva(), LocalDateTime.now()) < 48) {
+		if (horas < 48 && horas > 0) {
 			this.reembolso = new Reembolso(null, this.getValorTotal(), false, null, this);
 		}
 
 		// Após 48 horas o reembolso é 50% sem o valor da taxa de serviço
-		if (ChronoUnit.HOURS.between(this.getDataCriacaoReserva(), LocalDateTime.now()) >= 48) {
+		if (horas >= 48) {
 			this.reembolso = new Reembolso(null,
-					this.getValorTotal().subtract(this.getTaxaServico()).multiply(new BigDecimal("0.5")), false, null,
+					this.getValorTotal().multiply(new BigDecimal("0.5")).subtract(this.getTaxaServico()), false, null,
 					this);
 		}
 
