@@ -65,9 +65,6 @@ public class Reserva {
 	private Acomodacao acomodacao;
 
 	@Getter
-	private LocalDateTime dataCancelamento;
-
-	@Getter
 	@Column(nullable = true, length = 1000)
 	private String informacoes;
 
@@ -79,6 +76,10 @@ public class Reserva {
 
 	@Getter
 	private BigDecimal taxaServico;
+	
+	@Getter
+	private LocalDateTime dataCancelamento;
+
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(referencedColumnName = "id", name = "reembolso_id")
