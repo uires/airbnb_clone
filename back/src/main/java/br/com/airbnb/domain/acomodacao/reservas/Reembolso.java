@@ -32,6 +32,7 @@ public class Reembolso {
 	private LocalDateTime dataProcessamento;
 
 	@OneToOne(mappedBy = "reembolso")
+	@Getter
 	private Reserva reserva;
 
 	public void processa() {
