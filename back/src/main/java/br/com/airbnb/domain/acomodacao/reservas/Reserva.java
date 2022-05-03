@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
+import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeConfirmarException;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,7 +63,7 @@ public class Reserva {
 	@Getter
 	private Usuario hospede;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Getter
 	private Acomodacao acomodacao;
 
@@ -82,7 +83,7 @@ public class Reserva {
 	@Getter
 	private LocalDateTime dataCancelamento;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(referencedColumnName = "id", name = "reembolso_id")
 	@JsonIgnore
 	private Reembolso reembolso;
@@ -149,6 +150,18 @@ public class Reserva {
 
 		this.reservaCancelada = true;
 		this.dataCancelamento = LocalDateTime.now();
+	}
+
+	/**
+	 * Aprova a reserva conforme definição do anfitrião
+	 */
+	public void aprova() {
+		if (this.isReservaCancelada()) {
+			throw new ImpossibilidadeConfirmarException();
+		}
+
+		this.dataConfirmacaoAnfitriao = LocalDateTime.now();
+		this.reservaConfirmada = true;
 	}
 
 }

@@ -51,13 +51,16 @@ public class ReservaController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Reserva> cancela(@PathVariable(required = true) Long id) {
-		Optional<Reserva> optional = this.reservaService.busca(id);
-		if (!optional.isPresent()) {
-			throw new EntityNotFoundException();
-		}
-
-		Reserva reserva = this.reservaService.cancelaReserva(optional.get());
+		Reserva reserva = this.reservaService.busca(id);
+		reserva = this.reservaService.cancelaReserva(reserva);
 		return ResponseEntity.ok(reserva);
+	}
+
+	@PutMapping("aprova-reserva/{id}")
+	public ResponseEntity<?> aprovaReserva(@PathVariable Long id) {
+		Reserva reserva = this.reservaService.busca(id);
+		reserva = this.reservaService.aprovaReserva(reserva);
+		return ResponseEntity.noContent().build();
 	}
 
 }
