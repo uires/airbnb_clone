@@ -25,7 +25,7 @@ public class ProcessaReembolsoService {
 	@Autowired
 	private EmailService emailService;
 
-	@Scheduled(cron = "0 0/1 * 1/1 * ?")
+	@Scheduled(cron = "0 0 0/2 1/1 * ?")
 	@Transactional
 	public void processaReembolso() {
 		List<Reembolso> reembolsos = this.reembolsoRepository.findByProcessadoFalse();
