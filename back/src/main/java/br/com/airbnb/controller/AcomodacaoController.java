@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.airbnb.controller.exception.EntityNotFoundException;
 import br.com.airbnb.controller.form.AcomodacaoForm;
+import br.com.airbnb.controller.form.ConsultaForm;
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.service.AcomodacaoService;
@@ -61,4 +62,10 @@ public class AcomodacaoController {
 
 		return ResponseEntity.ok(optional.get());
 	}
+
+	@PostMapping("/consulta-acomodacao")
+	public ResponseEntity<?> consultaAcomodacao(@RequestBody ConsultaForm form) {
+		return null;
+	}
+
 }
