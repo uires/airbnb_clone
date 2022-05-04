@@ -19,7 +19,6 @@ public class PrecificacaoTest {
 	public void testaCriacaoAcomodacaoComPrecificacaoMenorIgual74() {
 		assertThrows(PrecoPernoiteNaoPodeSerMenorQue74ReaisException.class,
 				() -> new Precificacao(new BigDecimal("73.99"), null, false));
-
 	}
 
 	/**

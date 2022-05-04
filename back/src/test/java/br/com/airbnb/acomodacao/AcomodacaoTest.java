@@ -14,7 +14,7 @@ import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDo
 public class AcomodacaoTest {
 
 	/**
-	 * Válida a estouro de exception ao criar Acomodação mais mais de dois destaques
+	 * Válida a estouro de exception ao criar Acomodação com mais de dois destaques
 	 */
 	@Test
 	public void testaCriacaoAcomodacaoComMaisDeUmDestaque() {
