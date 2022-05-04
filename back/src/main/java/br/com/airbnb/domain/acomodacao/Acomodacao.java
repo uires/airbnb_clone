@@ -26,6 +26,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import br.com.airbnb.domain.acomodacao.exception.IntervaloDeReservaInvalidoException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarMaisQueDoisDestaquesException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarUmaReservaNoPassadoException;
@@ -202,7 +203,7 @@ public class Acomodacao {
 		}
 
 		if (reserva.getFimReserva().isBefore(reserva.getInicioReserva())) {
-			throw new IllegalArgumentException("Não é possível cadastrar uma reserva com esse intervalo de data");
+			throw new IntervaloDeReservaInvalidoException();
 		}
 
 		reserva.calculaTotal();
