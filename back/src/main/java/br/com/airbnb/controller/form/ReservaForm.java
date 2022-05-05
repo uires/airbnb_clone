@@ -1,6 +1,5 @@
 package br.com.airbnb.controller.form;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -59,9 +58,7 @@ public class ReservaForm {
 		}
 
 		Hospedes hospedes = new Hospedes(adultos, criancas, bebes, animais);
-		return new Reserva(null, inicioReserva, fimReserva, LocalDateTime.now(), BigDecimal.ZERO, BigDecimal.ZERO,
-				false, hospedes, usuario.get(), acomodacao, informacoes, false, null, acomodacao.getTaxaDeServico(),
-				null, null);
+		return new Reserva(inicioReserva, fimReserva, hospedes, usuario.get(), acomodacao);
 	}
 
 }

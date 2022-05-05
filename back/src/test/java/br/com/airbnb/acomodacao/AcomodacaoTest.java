@@ -20,9 +20,8 @@ public class AcomodacaoTest {
 	public void testaCriacaoAcomodacaoComMaisDeUmDestaque() {
 		List<Destaque> destaques = Arrays.asList(Destaque.IDEAL_PARA_FAMILIAS, Destaque.IDEAL_PARA_FAMILIAS,
 				Destaque.IDEAL_PARA_FAMILIAS);
-
-		assertThrows(NaoEhPossivelCadastrarMaisQueDoisDestaquesException.class,
-				() -> new Acomodacao(null, null, null, null, null, null, null, null, null, null, destaques, null, null,
-						null, null, null, null, null, false, null, null));
+		
+		assertThrows(NaoEhPossivelCadastrarMaisQueDoisDestaquesException.class, () -> new Acomodacao(null, null, null,
+				null, null, null, null, null, destaques, null, null, null, null, false, null, null));
 	}
 }

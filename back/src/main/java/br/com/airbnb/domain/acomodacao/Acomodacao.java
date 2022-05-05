@@ -127,17 +127,14 @@ public class Acomodacao {
 	@Column(nullable = false)
 	private Integer camas;
 
-	public Acomodacao(Long id, TipoLugar tipoLugar, Point localizacao, Endereco endereco, Hospedes hopedes,
-			List<Espaco> espacos, Precificacao precificacao, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza,
-			String descricao, List<Destaque> destaques, String titulo, List<Foto> fotos, Usuario usuario,
-			List<Reserva> reservas, LocalTime horarioCheckIn, LocalTime horarioCheckOut, List<Avaliacao> avaliacoes,
-			boolean permiteAnimais, QuantidadesComodos quantidadesComodos, Integer camas) {
+	public Acomodacao(TipoLugar tipoLugar, Endereco endereco, Hospedes hopedes, List<Espaco> espacos,
+			Precificacao precificacao, BigDecimal taxaDeServico, BigDecimal taxaDeLimpeza, String descricao,
+			List<Destaque> destaques, String titulo, Usuario usuario, LocalTime horarioCheckIn,
+			LocalTime horarioCheckOut, boolean permiteAnimais, QuantidadesComodos quantidadesComodos, Integer camas) {
 		if (destaques.size() > 2) {
 			throw new NaoEhPossivelCadastrarMaisQueDoisDestaquesException();
 		}
-		this.id = id;
 		this.tipoLugar = tipoLugar;
-		this.localizacao = localizacao;
 		this.endereco = endereco;
 		this.hopedes = hopedes;
 		this.espacos = espacos;
@@ -147,12 +144,11 @@ public class Acomodacao {
 		this.descricao = descricao;
 		this.destaques = destaques;
 		this.titulo = titulo;
-		this.fotos = fotos;
 		this.usuario = usuario;
-		this.reservas = reservas;
+		this.reservas = new ArrayList<>();
 		this.horarioCheckIn = horarioCheckIn;
 		this.horarioCheckOut = horarioCheckOut;
-		this.avaliacoes = avaliacoes;
+		this.avaliacoes = new ArrayList<>();
 		this.permiteAnimais = permiteAnimais;
 		this.quantidadesComodos = quantidadesComodos;
 		this.camas = camas;
@@ -239,6 +235,10 @@ public class Acomodacao {
 
 	public void adicionaImagens(List<Foto> fotos) {
 		this.fotos.addAll(fotos);
+	}
+	
+	public void atualizaAcomodacao() {
+		
 	}
 
 }
