@@ -1,5 +1,6 @@
 package br.com.airbnb.acomodacao.reserva;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
@@ -37,7 +38,7 @@ public class ReservaTest {
 	}
 
 	/**
-	 * Válida se ao adicionar uma reserva com nova dias a frente o método estoura
+	 * Válida se ao adicionar uma reserva com nova dias a frente o método lança
 	 * exception
 	 */
 	@Test
@@ -52,7 +53,7 @@ public class ReservaTest {
 
 	/**
 	 * Válida se ao adicionar uma reserva com quantidade de hóspedes maior do que a
-	 * da acomodação a funcionalidade estoura exception
+	 * da acomodação a funcionalidade lança exception
 	 */
 	@Test
 	public void testaEstouroExceptionQuandoQuantidadeNaoCondizComAcomodacao() {
@@ -66,7 +67,7 @@ public class ReservaTest {
 
 	/**
 	 * Válida se ao adicionar uma reserva com data de inicio/fim que sobrepoem as
-	 * datas de outro a funcionalidade estoura exception
+	 * datas de outro a funcionalidade lança exception
 	 */
 	@Test
 	public void testaEstouExceptionAoSobreporReserva() {
@@ -81,7 +82,7 @@ public class ReservaTest {
 
 	/**
 	 * Válida se ao adicionar uma reserva com data de inicio no passado a acomodação
-	 * estoura exception
+	 * lança exception
 	 */
 	@Test
 	public void testaEstouroExceptionReservaCadastradaNoPassado() {
@@ -95,7 +96,7 @@ public class ReservaTest {
 
 	/**
 	 * Válida se ao adicionar uma reserva com data de fim antes da data de ínicio o
-	 * método estou exception
+	 * método lança exception
 	 */
 	@Test
 	public void testaEstouroExceptionReservaComDataFimAntesDeDataInicio() {
@@ -105,6 +106,48 @@ public class ReservaTest {
 
 		assertThrows(IntervaloDeReservaInvalidoException.class, () -> this.acomodacao.adicionaReserva(reservaUm));
 	}
-	
-	
+
+	/**
+	 * Válida cálculo total sem desconto
+	 */
+	@Test
+	public void testaCalculoTotal() {
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(2L), LocalDateTime.now().plusDays(4L), hospedes,
+				new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+		assertEquals(new BigDecimal("1225.00"), reservaUm.getValorTotal());
+	}
+
+	/**
+	 * Válida cálculo total com desconto 20%
+	 */
+	@Test
+	public void testaCalculoTotalComDesconto20() {
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(2L), LocalDateTime.now().plusDays(4L), hospedes,
+				new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+		assertEquals(new BigDecimal("980.00"), reservaUm.getValorTotal());
+		assertEquals(new BigDecimal("245.00"), reservaUm.getDesconto());
+	}
+
+	/**
+	 * Válida cálculo total com desconto por semana
+	 */
+	@Test
+	public void testaCalculoTotalComDescontoSemanal() {
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(50L), hospedes,
+				new Usuario(), acomodacao);
+		
+		this.acomodacao.adicionaReserva(reservaUm);
+		assertEquals(new BigDecimal("22994.25"), reservaUm.getValorTotal());
+		assertEquals(new BigDecimal("1730.75"), reservaUm.getDesconto());
+	}
+
 }
