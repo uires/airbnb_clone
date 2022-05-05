@@ -24,13 +24,14 @@ import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeConfirmarException;
 import br.com.airbnb.domain.usuario.Usuario;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Reserva {
 
 	@Id
@@ -38,9 +39,11 @@ public class Reserva {
 	private Long id;
 
 	@Getter
+	@NonNull
 	private LocalDateTime inicioReserva;
 
 	@Getter
+	@NonNull
 	private LocalDateTime fimReserva;
 
 	@Getter
@@ -50,21 +53,24 @@ public class Reserva {
 	private BigDecimal desconto;
 
 	@Getter
-	private BigDecimal valorTotal;
+	private BigDecimal valorTotal = BigDecimal.ZERO;
 
 	private boolean reservaCancelada = false;
 
 	@Getter
 	@Embedded
+	@NonNull
 	private Hospedes hospedes;
 
 	@OneToOne
 	@JoinColumn(name = "hospede_id", referencedColumnName = "id")
 	@Getter
+	@NonNull
 	private Usuario hospede;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Getter
+	@NonNull
 	private Acomodacao acomodacao;
 
 	@Getter

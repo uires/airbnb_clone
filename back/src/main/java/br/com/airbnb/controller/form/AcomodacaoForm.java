@@ -106,9 +106,10 @@ public class AcomodacaoForm {
 		Hospedes hospedes = new Hospedes(this.adultos, this.criancas, this.bebes, this.animais);
 		QuantidadesComodos quantidadesComodos = new QuantidadesComodos(null, null);
 		Precificacao precoPernoite = new Precificacao(precoNoite, precoMensal, permiteDescontoTresPrimeirosHospedes);
-		return new Acomodacao(null, lugar, null, endereco, hospedes, espacos, precoPernoite, taxaDeServico,
-				taxaDeLimpeza, descricao, destaques, titulo, null, usuario.get(), null, horarioCheckIn, horarioCheckOut,
-				null, permiteAnimais, quantidadesComodos, camas);
+
+		return new Acomodacao(lugar, endereco, hospedes, espacos, precoPernoite, taxaDeServico, taxaDeLimpeza,
+				descricao, destaques, titulo, usuario.get(), horarioCheckIn, horarioCheckOut, permiteAnimais,
+				quantidadesComodos, camas);
 	}
 
 }
