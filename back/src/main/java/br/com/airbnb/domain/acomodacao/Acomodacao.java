@@ -236,9 +236,9 @@ public class Acomodacao {
 	public void adicionaImagens(List<Foto> fotos) {
 		this.fotos.addAll(fotos);
 	}
-	
-	public void atualizaAcomodacao() {
-		
+
+	public void atualizaAcomodacao(Precificacao precificacao) {
+		this.precificacao = precificacao;
 	}
 
 }
