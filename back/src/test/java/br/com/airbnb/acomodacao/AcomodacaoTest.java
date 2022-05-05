@@ -25,5 +25,4 @@ public class AcomodacaoTest {
 				() -> new Acomodacao(null, null, null, null, null, null, null, null, null, null, destaques, null, null,
 						null, null, null, null, null, false, null, null));
 	}
-
 }
