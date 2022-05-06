@@ -1,7 +1,10 @@
 package br.com.airbnb.acomodacao.reserva;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +19,7 @@ import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.Destaque;
 import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.Precificacao;
+import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
 import br.com.airbnb.domain.acomodacao.exception.IntervaloDeReservaInvalidoException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarUmaReservaNoPassadoException;
@@ -164,6 +168,42 @@ public class ReservaTest {
 
 		assertEquals(new BigDecimal("3305.75"), reservaUm.getDesconto());
 		assertEquals(new BigDecimal("43919.25"), reservaUm.getValorTotal());
+	}
+
+	/**
+	 * Válida aprovação de reserva
+	 */
+	@Test
+	public void testaAprovacaoReserva() {
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L), hospedes,
+				new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+		reservaUm.aprova();
+
+		assertNotNull(reservaUm.getDataConfirmacaoAnfitriao());
+		assertTrue(reservaUm.isReservaConfirmada());
+		assertFalse(reservaUm.isReservaCancelada());
+	}
+
+	/**
+	 * Válida lançamento de exception ao cancelar um reserva cancelada
+	 * posteriormente
+	 */
+	@Test
+	public void testaCancelamentoDeReservaDeReserCancelada() {
+
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L), hospedes,
+				new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+
+		reservaUm.cancela();
+		assertThrows(ImpossibilidadeCancelarException.class, () -> reservaUm.cancela());
 	}
 
 }
