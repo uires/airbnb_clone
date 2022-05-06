@@ -131,8 +131,8 @@ public class ReservaTest {
 				new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
-		assertEquals(new BigDecimal("980.00"), reservaUm.getValorTotal());
 		assertEquals(new BigDecimal("245.00"), reservaUm.getDesconto());
+		assertEquals(new BigDecimal("980.00"), reservaUm.getValorTotal());
 	}
 
 	/**
@@ -144,10 +144,26 @@ public class ReservaTest {
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
 		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(50L), hospedes,
 				new Usuario(), acomodacao);
-		
+
 		this.acomodacao.adicionaReserva(reservaUm);
-		assertEquals(new BigDecimal("22994.25"), reservaUm.getValorTotal());
 		assertEquals(new BigDecimal("1730.75"), reservaUm.getDesconto());
+		assertEquals(new BigDecimal("22994.25"), reservaUm.getValorTotal());
+	}
+
+	/**
+	 * Válida cálculo total com desconto por mês
+	 */
+	@Test
+	public void testaCalculoTotalComDescontoMensal() {
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(95L), hospedes,
+				new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+
+		assertEquals(new BigDecimal("3305.75"), reservaUm.getDesconto());
+		assertEquals(new BigDecimal("43919.25"), reservaUm.getValorTotal());
 	}
 
 }
