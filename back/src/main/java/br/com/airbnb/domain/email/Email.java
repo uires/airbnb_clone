@@ -11,5 +11,5 @@ public class Email {
 	private String assunto;
 	private String para;
 	private String templeteHtml;
-	Map<String, Object> valores;
+	private Map<String, Object> valores;
 }
