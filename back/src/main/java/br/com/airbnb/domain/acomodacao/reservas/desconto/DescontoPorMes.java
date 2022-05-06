@@ -14,7 +14,7 @@ import br.com.airbnb.domain.acomodacao.reservas.Reserva;
  */
 public class DescontoPorMes extends Desconto {
 
-	private final double TX_DESCONTO_MES = 0.03;
+	private final double TX_DESCONTO_MES = 0.07;
 
 	public DescontoPorMes(Desconto proximo) {
 		super(proximo);
@@ -23,7 +23,6 @@ public class DescontoPorMes extends Desconto {
 	@Override
 	public BigDecimal calcular(Reserva reserva) {
 		long meses = ChronoUnit.MONTHS.between(reserva.getInicioReserva(), reserva.getFimReserva());
-
 		if (meses > 0) {
 			BigDecimal taxaDesconto = new BigDecimal(this.TX_DESCONTO_MES);
 			return reserva.getValorTotal().multiply(taxaDesconto).setScale(2, RoundingMode.HALF_UP);
