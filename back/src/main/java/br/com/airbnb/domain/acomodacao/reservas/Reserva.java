@@ -47,8 +47,7 @@ public class Reserva {
 	private LocalDateTime fimReserva;
 
 	@Getter
-	private LocalDateTime dataCriacaoReserva;
-
+	private LocalDateTime dataCriacaoReserva = LocalDateTime.now();
 	@Getter
 	private BigDecimal desconto;
 
