@@ -28,10 +28,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class Reserva {
 
 	@Id
@@ -47,7 +49,8 @@ public class Reserva {
 	private LocalDateTime fimReserva;
 
 	@Getter
-	private LocalDateTime dataCriacaoReserva = LocalDateTime.now();
+	@NonNull
+	private LocalDateTime dataCriacaoReserva;
 	@Getter
 	private BigDecimal desconto;
 
@@ -88,6 +91,7 @@ public class Reserva {
 	@Getter
 	private LocalDateTime dataCancelamento;
 
+	@Getter
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(referencedColumnName = "id", name = "reembolso_id")
 	@JsonIgnore
@@ -148,9 +152,8 @@ public class Reserva {
 
 		// Após 48 horas o reembolso é 50% sem o valor da taxa de serviço
 		if (horas >= 48) {
-			this.reembolso = new Reembolso(null,
-					this.getValorTotal().multiply(new BigDecimal("0.5")).subtract(this.getTaxaServico()), false, null,
-					this);
+			this.reembolso = new Reembolso(null, this.getValorTotal().multiply(new BigDecimal("0.5"))
+					.subtract(this.getTaxaServico()).setScale(2, RoundingMode.HALF_UP), false, null, this);
 		}
 
 		this.reservaCancelada = true;

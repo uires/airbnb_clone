@@ -58,7 +58,7 @@ public class ReservaForm {
 		}
 
 		Hospedes hospedes = new Hospedes(adultos, criancas, bebes, animais);
-		return new Reserva(inicioReserva, fimReserva, hospedes, usuario.get(), acomodacao);
+		return new Reserva(inicioReserva, fimReserva, LocalDateTime.now(), hospedes, usuario.get(), acomodacao);
 	}
 
 }

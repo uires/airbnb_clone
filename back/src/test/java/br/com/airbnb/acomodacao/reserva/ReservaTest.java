@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class ReservaTest {
 	public void testaEstouroExceptionReservaMaiorQue90Dias() {
 		Hospedes hospedes = new Hospedes(1, 0, 0, 0);
 		var reservaUm = new Reserva(LocalDateTime.now().with(LocalTime.NOON).plusDays(91L),
-				LocalDateTime.now().plusDays(500L), hospedes, new Usuario(), acomodacao);
+				LocalDateTime.now().plusDays(500L), LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		assertThrows(NaoEhPossivelAdicionaReserva90DiasAFrenteException.class,
 				() -> this.acomodacao.adicionaReserva(reservaUm));
@@ -63,7 +64,7 @@ public class ReservaTest {
 	public void testaEstouroExceptionQuandoQuantidadeNaoCondizComAcomodacao() {
 		var hospedes = new Hospedes(4, 0, 0, 0);
 		var reservaUm = new Reserva(LocalDateTime.now().with(LocalTime.NOON).plusDays(30L),
-				LocalDateTime.now().plusDays(35L), hospedes, new Usuario(), acomodacao);
+				LocalDateTime.now().plusDays(35L), LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		assertThrows(QuantidadesDeHospedesNaoBateComAcomodacaoException.class,
 				() -> this.acomodacao.adicionaReserva(reservaUm));
@@ -77,7 +78,7 @@ public class ReservaTest {
 	public void testaEstouExceptionAoSobreporReserva() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		var reservaUm = new Reserva(LocalDateTime.now().with(LocalTime.NOON).plusDays(30L),
-				LocalDateTime.now().plusDays(35L), hospedes, new Usuario(), acomodacao);
+				LocalDateTime.now().plusDays(35L), LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 		assertThrows(NaoEhPossivelReservaSobreporOutraException.class,
@@ -91,8 +92,8 @@ public class ReservaTest {
 	@Test
 	public void testaEstouroExceptionReservaCadastradaNoPassado() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
-		var reservaUm = new Reserva(LocalDateTime.of(2021, 12, 1, 1, 30), LocalDateTime.now().plusDays(1L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.of(2021, 12, 1, 1, 30), LocalDateTime.now().plusDays(1L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		assertThrows(NaoEhPossivelCadastrarUmaReservaNoPassadoException.class,
 				() -> this.acomodacao.adicionaReserva(reservaUm));
@@ -105,8 +106,8 @@ public class ReservaTest {
 	@Test
 	public void testaEstouroExceptionReservaComDataFimAntesDeDataInicio() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.of(2021, 12, 1, 1, 30), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.of(2021, 12, 1, 1, 30),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		assertThrows(IntervaloDeReservaInvalidoException.class, () -> this.acomodacao.adicionaReserva(reservaUm));
 	}
@@ -118,8 +119,8 @@ public class ReservaTest {
 	public void testaCalculoTotal() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(2L), LocalDateTime.now().plusDays(4L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(2L), LocalDateTime.now().plusDays(4L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 		assertEquals(new BigDecimal("1225.00"), reservaUm.getValorTotal());
@@ -131,8 +132,8 @@ public class ReservaTest {
 	@Test
 	public void testaCalculoTotalComDesconto20() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(2L), LocalDateTime.now().plusDays(4L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(2L), LocalDateTime.now().plusDays(4L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 		assertEquals(new BigDecimal("245.00"), reservaUm.getDesconto());
@@ -146,8 +147,8 @@ public class ReservaTest {
 	public void testaCalculoTotalComDescontoSemanal() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(50L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(50L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 		assertEquals(new BigDecimal("1730.75"), reservaUm.getDesconto());
@@ -161,8 +162,8 @@ public class ReservaTest {
 	public void testaCalculoTotalComDescontoMensal() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(95L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(95L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 
@@ -177,8 +178,8 @@ public class ReservaTest {
 	public void testaAprovacaoReserva() {
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 		reservaUm.aprova();
@@ -197,13 +198,32 @@ public class ReservaTest {
 
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
-		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L), hospedes,
-				new Usuario(), acomodacao);
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 
 		reservaUm.cancela();
 		assertThrows(ImpossibilidadeCancelarException.class, () -> reservaUm.cancela());
+	}
+
+	/**
+	 * Válida reembolso de 50% menos taxa de serviço depois de 48h
+	 */
+	@Test
+	public void testaReembolso50Porcento48Horas() {
+
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(5L), LocalDateTime.now().plusDays(10L),
+				LocalDateTime.of(2020, 01, 01, 1, 59), hospedes, new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+
+		reservaUm.cancela();
+		var valorReembolso = reservaUm.getValorTotal().multiply(new BigDecimal("0.5"))
+				.subtract(reservaUm.getTaxaServico()).setScale(2, RoundingMode.HALF_UP);
+		assertEquals(valorReembolso, reservaUm.getReembolso().getValor());
 	}
 
 }
