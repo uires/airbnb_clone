@@ -171,5 +171,5 @@ public class Reserva {
 		this.dataConfirmacaoAnfitriao = LocalDateTime.now();
 		this.reservaConfirmada = true;
 	}
-
+	
 }
