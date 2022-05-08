@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,7 +46,7 @@ public class Usuario implements UserDetails {
 	@Getter
 	private String segundoNome;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "foto_id", referencedColumnName = "id")
 	@Getter
 	private Foto foto;
@@ -119,4 +120,14 @@ public class Usuario implements UserDetails {
 	public boolean isPermiteEmailDeMarketing() {
 		return permiteEmailDeMarketing;
 	}
+
+	public void adicionaFoto(Foto foto) {
+		this.foto = foto;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [foto=" + foto + "]";
+	}
+
 }

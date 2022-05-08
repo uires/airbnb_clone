@@ -53,7 +53,7 @@ public class AcomodacaoService {
 
 		Acomodacao acomodacao = acomodacaoOptional.get();
 
-		List<ImageResponse> listaImagens = this.imageService.upload(fotos);
+		List<ImageResponse> listaImagens = this.imageService.uploadMany(fotos);
 		List<Foto> listaFotos = listaImagens.stream()
 				.map(imagem -> new Foto(null, imagem.getLink(), acomodacaoOptional.get(), imagem.getDeletehash()))
 				.collect(Collectors.toList());
