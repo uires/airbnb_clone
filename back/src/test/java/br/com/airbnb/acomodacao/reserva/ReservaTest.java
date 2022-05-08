@@ -226,4 +226,22 @@ public class ReservaTest {
 		assertEquals(valorReembolso, reservaUm.getReembolso().getValor());
 	}
 
+	/**
+	 * Válida reembolso de 100% antes de 48h
+	 */
+	@Test
+	public void testaReembolso100Porcento() {
+
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(5L), LocalDateTime.now().plusDays(10L),
+				LocalDateTime.of(2020, 01, 01, 1, 59), hospedes, new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+
+		reservaUm.cancela();
+		assertEquals(reservaUm.getValorTotal().subtract(reservaUm.getDesconto()).setScale(2, RoundingMode.HALF_UP),
+				reservaUm.getReembolso().getValor());
+	}
+
 }
