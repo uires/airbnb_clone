@@ -22,7 +22,7 @@ public class ImageService {
 	@Value("${imgur.api.url}")
 	private String url;
 
-	public List<ImageResponse> upload(MultipartFile[] fotos) {
+	public List<ImageResponse> uploadMany(MultipartFile[] fotos) {
 		List<ImageResponse> listaFotos = new ArrayList<>();
 
 		Arrays.asList(fotos).stream().forEach(foto -> {
@@ -31,6 +31,16 @@ public class ImageService {
 		});
 
 		return listaFotos;
+	}
+
+	public ImageResponse uploadOne(MultipartFile foto) {
+		ImageResponse uploadImage = this.uploadImage(foto);
+		return uploadImage;
+	}
+
+	public void deleteImage(String deletehash) {
+		Unirest.delete(this.url + "/" + deletehash).header("Authorization", "Client-ID " + this.clientId)
+				.multiPartContent().asString();
 	}
 
 	private ImageResponse uploadImage(MultipartFile foto) {
@@ -52,4 +62,5 @@ public class ImageService {
 
 		return imageResponse;
 	}
+
 }

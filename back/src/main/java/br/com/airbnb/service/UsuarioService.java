@@ -1,12 +1,20 @@
 package br.com.airbnb.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import br.com.airbnb.controller.exception.EntityNotFoundException;
+import br.com.airbnb.domain.usuario.Foto;
 import br.com.airbnb.domain.usuario.Usuario;
+import br.com.airbnb.repository.FotoUsuarioRepository;
 import br.com.airbnb.repository.UsuarioRepository;
+import br.com.airbnb.service.image.ImageResponse;
+import br.com.airbnb.service.image.ImageService;
 
 @Service
 public class UsuarioService {
@@ -14,8 +22,34 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private ImageService imageService;
+
+	@Autowired
+	private FotoUsuarioRepository fotoUsuarioRepository;
+
 	@Transactional
-	public void cadastraUsuario(Usuario usuario) {
-		this.usuarioRepository.save(usuario);
+	public Usuario cadastraUsuario(Usuario usuario) {
+		usuario = this.usuarioRepository.save(usuario);
+		return usuario;
+	}
+
+	@Transactional
+	public Usuario uploadImagem(Long id, MultipartFile file) {
+		Optional<Usuario> optional = this.usuarioRepository.findById(id);
+		if (!optional.isPresent()) {
+			throw new EntityNotFoundException();
+		}
+
+		Usuario usuario = optional.get();
+		if (usuario.getFoto() != null) {
+			Foto foto = usuario.getFoto();
+			this.fotoUsuarioRepository.delete(foto);
+			this.imageService.deleteImage(foto.getDeletehash());
+		}
+
+		ImageResponse imageResponse = this.imageService.uploadOne(file);
+		usuario.adicionaFoto(new Foto(imageResponse.getLink(), imageResponse.getDeletehash(), usuario));
+		return usuario;
 	}
 }
