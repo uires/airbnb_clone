@@ -51,13 +51,12 @@ public class AcomodacaoForm {
 
 	@NotNull
 	private Integer bebes;
+
 	@NotNull
 	private Integer animais;
 
-	@NotNull
 	private BigDecimal precoNoite;
 
-	@NotNull
 	private BigDecimal precoMensal;
 
 	@NotNull
@@ -104,7 +103,7 @@ public class AcomodacaoForm {
 		Endereco endereco = new Endereco(null, rua, estado, cidade, null, codigoPostal);
 
 		Hospedes hospedes = new Hospedes(this.adultos, this.criancas, this.bebes, this.animais);
-		QuantidadesComodos quantidadesComodos = new QuantidadesComodos(null, null);
+		QuantidadesComodos quantidadesComodos = new QuantidadesComodos(quartos, banheiros);
 		Precificacao precoPernoite = new Precificacao(precoNoite, precoMensal, permiteDescontoTresPrimeirosHospedes);
 
 		return new Acomodacao(lugar, endereco, hospedes, espacos, precoPernoite, taxaDeServico, taxaDeLimpeza,

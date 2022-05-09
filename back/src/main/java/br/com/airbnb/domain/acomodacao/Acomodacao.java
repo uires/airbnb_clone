@@ -94,8 +94,8 @@ public class Acomodacao {
 	@Getter
 	private String titulo;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "acomodacao")
-	private List<Foto> fotos;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acomodacao")
+	private List<Foto> fotos = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usuario_id")
