@@ -1,5 +1,7 @@
 package br.com.airbnb.domain.acomodacao.reservas.avaliacao;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,10 +18,12 @@ import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Avaliacao {
 
 	@Id
@@ -27,29 +31,29 @@ public class Avaliacao {
 	@Getter
 	private Long id;
 
-	@Column(precision = 1, scale = 1)
+	@Column(precision = 5, scale = 1)
 	@Getter
-	private Double notaLimpeza;
+	private BigDecimal  notaLimpeza;
+
+	@Column(precision = 5, scale = 1)
+	@Getter
+	private BigDecimal  notaComunicacao;
+
+	@Column(precision = 5, scale = 1)
+	@Getter
+	private BigDecimal  notaCheckIn;
 
 	@Column(precision = 1, scale = 1)
 	@Getter
-	private Double notaComunicacao;
+	private BigDecimal  notaExatidaoDoAnuncio;
 
 	@Column(precision = 1, scale = 1)
 	@Getter
-	private Double notaCheckIn;
+	private BigDecimal  notaLocalizacao;
 
 	@Column(precision = 1, scale = 1)
 	@Getter
-	private Double notaExatidaoDoAnuncio;
-
-	@Column(precision = 1, scale = 1)
-	@Getter
-	private Double notaLocalizacao;
-
-	@Column(precision = 1, scale = 1)
-	@Getter
-	private Double notaCustoBenefico;
+	private BigDecimal  notaCustoBenefico;
 
 	@Lob
 	@Getter
