@@ -33,27 +33,27 @@ public class Avaliacao {
 
 	@Column(precision = 5, scale = 1)
 	@Getter
-	private BigDecimal  notaLimpeza;
+	private BigDecimal notaLimpeza;
 
 	@Column(precision = 5, scale = 1)
 	@Getter
-	private BigDecimal  notaComunicacao;
+	private BigDecimal notaComunicacao;
 
 	@Column(precision = 5, scale = 1)
 	@Getter
-	private BigDecimal  notaCheckIn;
+	private BigDecimal notaCheckIn;
 
-	@Column(precision = 1, scale = 1)
+	@Column(precision = 5, scale = 1)
 	@Getter
-	private BigDecimal  notaExatidaoDoAnuncio;
+	private BigDecimal notaExatidaoDoAnuncio;
 
-	@Column(precision = 1, scale = 1)
+	@Column(precision = 5, scale = 1)
 	@Getter
-	private BigDecimal  notaLocalizacao;
+	private BigDecimal notaLocalizacao;
 
-	@Column(precision = 1, scale = 1)
+	@Column(precision = 5, scale = 1)
 	@Getter
-	private BigDecimal  notaCustoBenefico;
+	private BigDecimal notaCustoBenefico;
 
 	@Lob
 	@Getter
@@ -61,9 +61,9 @@ public class Avaliacao {
 
 	@Getter
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "reserva_id", referencedColumnName = "id")
+	@JoinColumn(name = "reserva_id", referencedColumnName = "id", unique = true, nullable = false)
 	private Reserva reserva;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Acomodacao acomodacao;
 }
