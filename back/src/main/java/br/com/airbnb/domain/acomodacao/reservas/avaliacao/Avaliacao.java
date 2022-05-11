@@ -13,6 +13,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import lombok.AllArgsConstructor;
@@ -61,6 +63,7 @@ public class Avaliacao {
 
 	@Getter
 	@OneToOne(fetch = FetchType.LAZY)
+	@JsonBackReference
 	@JoinColumn(name = "reserva_id", referencedColumnName = "id", unique = true, nullable = false)
 	private Reserva reserva;
 

@@ -23,6 +23,8 @@ import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeConfirmarException;
+import br.com.airbnb.domain.acomodacao.exception.NaoPodeAvaliarException;
+import br.com.airbnb.domain.acomodacao.reservas.avaliacao.Avaliacao;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -96,6 +98,10 @@ public class Reserva {
 	@JoinColumn(referencedColumnName = "id", name = "reembolso_id")
 	@JsonIgnore
 	private Reembolso reembolso;
+
+	@Getter
+	@OneToOne(mappedBy = "reserva")
+	private Avaliacao avaliacao;
 
 	public boolean isReservaCancelada() {
 		return reservaCancelada;
@@ -171,5 +177,13 @@ public class Reserva {
 		this.dataConfirmacaoAnfitriao = LocalDateTime.now();
 		this.reservaConfirmada = true;
 	}
-	
+
+	public void adicionaAvaliacao(Avaliacao avaliacao) {
+		if (this.getAvaliacao() != null) {
+			throw new NaoPodeAvaliarException();
+		}
+
+		this.avaliacao = avaliacao;
+	}
+
 }
