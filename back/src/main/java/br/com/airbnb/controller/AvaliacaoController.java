@@ -29,7 +29,7 @@ public class AvaliacaoController {
 			@PathVariable(required = true) Long id) {
 		Reserva reserva = this.serviceReserva.busca(id);
 		Avaliacao avaliacao = avalicao.converte(reserva);
-		avaliacao = avaliacaoService.cadastra(avaliacao);
+		avaliacao = this.avaliacaoService.cadastra(reserva, avaliacao);
 		return ResponseEntity.ok(avaliacao);
 	}
 
