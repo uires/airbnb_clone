@@ -1,7 +1,7 @@
 package br.com.airbnb.repository.specification;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.criteria.Join;
@@ -82,7 +82,7 @@ public class AcomodacaoSpecification {
 				banheiros);
 	}
 
-	public static Specification<Acomodacao> periodoNaoOcupado(LocalDateTime inicioReserva, LocalDateTime fimReserva) {
+	public static Specification<Acomodacao> periodoNaoOcupado(LocalDate inicioReserva, LocalDate fimReserva) {
 		return (root, query, criteriaBuilder) -> {
 			Join<Acomodacao, Reserva> reservaJoin = root.join("reserva");
 			criteriaBuilder.between(reservaJoin.get("inicioReserva"), inicioReserva, fimReserva).not();

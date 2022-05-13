@@ -1,10 +1,16 @@
 package br.com.airbnb.controller.form;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.airbnb.domain.acomodacao.Espaco;
 import br.com.airbnb.domain.acomodacao.TipoLugar;
@@ -41,5 +47,13 @@ public class ConsultaForm {
 	private Integer quantidadeQuartos;
 
 	private List<Espaco> comodidades;
+
+	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(pattern = "YYYY-MM-dd")
+	private LocalDate inicioReserva;
+
+	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(pattern = "YYYY-MM-dd")
+	private LocalDate fimReserva;
 
 }

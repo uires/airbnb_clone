@@ -103,6 +103,11 @@ public class AcomodacaoService {
 			builderSpecification.and(AcomodacaoSpecification.comodidades(consultaForm.getComodidades()));
 		}
 
+		if (consultaForm.getInicioReserva() != null && consultaForm.getFimReserva() != null) {
+			builderSpecification.and(AcomodacaoSpecification.periodoNaoOcupado(consultaForm.getInicioReserva(),
+					consultaForm.getFimReserva()));
+		}
+
 		return this.repository.findAll(builderSpecification, pageable);
 	}
 }
