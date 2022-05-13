@@ -14,13 +14,17 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ConsultaForm {
+
 	@NotNull
+	@Max(value = 5)
 	private Integer adultos;
 
 	private Integer criancas;
 
 	@Max(value = 5)
 	private Integer bebes;
+
+	private boolean permiteAnimais = true;
 
 	@Max(value = 5)
 	private Integer animais;

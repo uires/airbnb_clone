@@ -1,6 +1,5 @@
 package br.com.airbnb.service;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -75,9 +74,35 @@ public class AcomodacaoService {
 	}
 
 	public Page<Acomodacao> consultaAcomodacoes(Pageable pageable, ConsultaForm consultaForm) {
-		return this.repository.findAll(
-				Specification
-						.where(AcomodacaoSpecification.precoNoite(new BigDecimal("30.00"), new BigDecimal("500.00"))),
-				pageable);
+		Specification<Acomodacao> builderSpecification = Specification.where(AcomodacaoSpecification
+				.precoNoite(consultaForm.getFaxaPrecoInicial(), consultaForm.getFaxaPrecoFinal()));
+
+		builderSpecification.and(AcomodacaoSpecification.permiteAnimais(consultaForm.isPermiteAnimais()));
+
+		if (consultaForm.getLugar() != null) {
+			builderSpecification.and(AcomodacaoSpecification.tipoLocal(consultaForm.getLugar()));
+		}
+
+		if (consultaForm.getAnimais() != 0) {
+			builderSpecification.and(AcomodacaoSpecification.quantidadeAnimais(consultaForm.getAnimais()));
+		}
+
+		if (consultaForm.getBebes() != 0) {
+			builderSpecification.and(AcomodacaoSpecification.quantidadeBebes(consultaForm.getBebes()));
+		}
+
+		if (consultaForm.getAdultos() != 0) {
+			builderSpecification.and(AcomodacaoSpecification.quantidadeAdultos(consultaForm.getAdultos()));
+		}
+
+		if (consultaForm.getCriancas() != 0) {
+			builderSpecification.and(AcomodacaoSpecification.quantidadeCriancas(consultaForm.getCriancas()));
+		}
+
+		if (consultaForm.getComodidades().size() > 0) {
+			builderSpecification.and(AcomodacaoSpecification.comodidades(consultaForm.getComodidades()));
+		}
+
+		return this.repository.findAll(builderSpecification, pageable);
 	}
 }
