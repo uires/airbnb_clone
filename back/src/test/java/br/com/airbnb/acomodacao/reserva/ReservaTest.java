@@ -39,7 +39,7 @@ public class ReservaTest {
 		Precificacao precificacao = new Precificacao(new BigDecimal("500"), null, true);
 		Hospedes hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao = new Acomodacao(null, null, hospedes, null, precificacao, new BigDecimal("75"),
-				new BigDecimal("150"), null, destaques, null, null, null, null, false, null, null);
+				new BigDecimal("150"), null, destaques, null, null, LocalTime.NOON, LocalTime.NOON, false, null, null);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class ReservaTest {
 		var hospedes = new Hospedes(3, 0, 0, 0);
 		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
 		var reservaUm = new Reserva(LocalDateTime.now().plusDays(5L), LocalDateTime.now().plusDays(10L),
-				LocalDateTime.of(2020, 01, 01, 1, 59), hospedes, new Usuario(), acomodacao);
+				LocalDateTime.now().minusDays(1), hospedes, new Usuario(), acomodacao);
 
 		this.acomodacao.adicionaReserva(reservaUm);
 
