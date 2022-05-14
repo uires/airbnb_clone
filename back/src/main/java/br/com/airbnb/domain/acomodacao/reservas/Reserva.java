@@ -3,6 +3,7 @@ package br.com.airbnb.domain.acomodacao.reservas;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.CascadeType;
@@ -184,6 +185,11 @@ public class Reserva {
 		}
 
 		this.avaliacao = avaliacao;
+	}
+
+	public void adicionaHorarioCheckInOut(LocalTime horarioCheckIn, LocalTime horarioCheckOut) {
+		this.inicioReserva.with(horarioCheckIn);
+		this.fimReserva.with(horarioCheckOut);
 	}
 
 }

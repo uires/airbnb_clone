@@ -26,13 +26,13 @@ import lombok.Setter;
 public class ReservaForm {
 
 	@NotNull
-	@DateTimeFormat(iso = ISO.DATE_TIME)
-	@JsonFormat(pattern = "YYYY-MM-dd HH:mm")
+	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(pattern = "YYYY-MM-dd")
 	private LocalDateTime fimReserva;
 
 	@NotNull
-	@DateTimeFormat(iso = ISO.DATE_TIME)
-	@JsonFormat(pattern = "YYYY-MM-dd HH:mm")
+	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(pattern = "YYYY-MM-dd")
 	private LocalDateTime inicioReserva;
 
 	@NotNull

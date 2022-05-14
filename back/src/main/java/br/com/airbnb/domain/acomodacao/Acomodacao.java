@@ -176,6 +176,8 @@ public class Acomodacao {
 	 * @param reserva
 	 */
 	public void adicionaReserva(Reserva reserva) {
+		reserva.adicionaHorarioCheckInOut(this.getHorarioCheckIn(), this.getHorarioCheckOut());
+
 		if (this.verificaSeDataEhMaiorQueNoventaDias(reserva.getInicioReserva())) {
 			throw new NaoEhPossivelAdicionaReserva90DiasAFrenteException();
 		}
