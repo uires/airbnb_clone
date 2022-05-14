@@ -84,7 +84,7 @@ public class AcomodacaoSpecification {
 
 	public static Specification<Acomodacao> periodoNaoOcupado(LocalDate inicioReserva, LocalDate fimReserva) {
 		return (root, query, criteriaBuilder) -> {
-			Join<Acomodacao, Reserva> reservaJoin = root.join("reserva");
+			Join<Acomodacao, Reserva> reservaJoin = root.join("reservas");
 			criteriaBuilder.between(reservaJoin.get("inicioReserva"), inicioReserva, fimReserva).not();
 			return criteriaBuilder.between(reservaJoin.get("fimReserva"), inicioReserva, fimReserva).not();
 		};
