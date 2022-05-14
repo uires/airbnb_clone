@@ -1,7 +1,7 @@
 package br.com.airbnb.controller.form;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.Max;
@@ -50,10 +50,10 @@ public class ConsultaForm {
 
 	@DateTimeFormat(iso = ISO.DATE)
 	@JsonFormat(pattern = "YYYY-MM-dd")
-	private LocalDate inicioReserva;
+	private LocalDateTime inicioReserva;
 
 	@DateTimeFormat(iso = ISO.DATE)
 	@JsonFormat(pattern = "YYYY-MM-dd")
-	private LocalDate fimReserva;
+	private LocalDateTime fimReserva;
 
 }
