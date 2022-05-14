@@ -80,33 +80,39 @@ public class AcomodacaoService {
 		builderSpecification.and(AcomodacaoSpecification.permiteAnimais(consultaForm.isPermiteAnimais()));
 
 		if (consultaForm.getLugar() != null) {
-			builderSpecification.and(AcomodacaoSpecification.tipoLocal(consultaForm.getLugar()));
+			builderSpecification = builderSpecification.and(AcomodacaoSpecification.tipoLocal(consultaForm.getLugar()));
 		}
 
 		if (consultaForm.getAnimais() != 0) {
-			builderSpecification.and(AcomodacaoSpecification.quantidadeAnimais(consultaForm.getAnimais()));
+			builderSpecification = builderSpecification
+					.and(AcomodacaoSpecification.quantidadeAnimais(consultaForm.getAnimais()));
 		}
 
 		if (consultaForm.getBebes() != 0) {
-			builderSpecification.and(AcomodacaoSpecification.quantidadeBebes(consultaForm.getBebes()));
+			builderSpecification = builderSpecification
+					.and(AcomodacaoSpecification.quantidadeBebes(consultaForm.getBebes()));
 		}
 
 		if (consultaForm.getAdultos() != 0) {
-			builderSpecification.and(AcomodacaoSpecification.quantidadeAdultos(consultaForm.getAdultos()));
+			builderSpecification = builderSpecification
+					.and(AcomodacaoSpecification.quantidadeAdultos(consultaForm.getAdultos()));
 		}
 
 		if (consultaForm.getCriancas() != 0) {
-			builderSpecification.and(AcomodacaoSpecification.quantidadeCriancas(consultaForm.getCriancas()));
+			builderSpecification = builderSpecification
+					.and(AcomodacaoSpecification.quantidadeCriancas(consultaForm.getCriancas()));
 		}
 
 		if (consultaForm.getComodidades().size() > 0) {
-			builderSpecification.and(AcomodacaoSpecification.comodidades(consultaForm.getComodidades()));
+			builderSpecification = builderSpecification
+					.and(AcomodacaoSpecification.comodidades(consultaForm.getComodidades()));
 		}
-
+		
 		if (consultaForm.getInicioReserva() != null && consultaForm.getFimReserva() != null) {
-			builderSpecification.and(AcomodacaoSpecification.periodoNaoOcupado(consultaForm.getInicioReserva(),
-					consultaForm.getFimReserva()));
+			builderSpecification = builderSpecification.and(AcomodacaoSpecification
+					.periodoNaoOcupado(consultaForm.getInicioReserva(), consultaForm.getFimReserva()));
 		}
+		
 
 		return this.repository.findAll(builderSpecification, pageable);
 	}
