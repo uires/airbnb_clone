@@ -73,7 +73,37 @@ public class AcomodacaoService {
 		return acomodacao;
 	}
 
+	/**
+	 * Lista as comodações conforme a consulta enviada
+	 * 
+	 * @param pageable
+	 * @param consultaForm
+	 * @return
+	 */
 	public Page<Acomodacao> consultaAcomodacoes(Pageable pageable, ConsultaForm consultaForm) {
+		Specification<Acomodacao> builderSpecification = buildSpecification(consultaForm);
+		return this.repository.findAll(builderSpecification, pageable);
+	}
+
+	/**
+	 * Consulta sumarizada representa a quantidade registros de acomodações conforme
+	 * a consulta enviada
+	 * 
+	 * @param consultaForm
+	 * @return
+	 */
+	public long consultaSumarizada(ConsultaForm consultaForm) {
+		Specification<Acomodacao> builderSpecification = buildSpecification(consultaForm);
+		return this.repository.count(builderSpecification);
+	}
+
+	/**
+	 * Builda a consulta conforme os valores dos parâmetros enviados na requisição
+	 * 
+	 * @param consultaForm
+	 * @return
+	 */
+	private Specification<Acomodacao> buildSpecification(ConsultaForm consultaForm) {
 		Specification<Acomodacao> builderSpecification = Specification.where(AcomodacaoSpecification
 				.precoNoite(consultaForm.getFaxaPrecoInicial(), consultaForm.getFaxaPrecoFinal()));
 
@@ -107,13 +137,12 @@ public class AcomodacaoService {
 			builderSpecification = builderSpecification
 					.and(AcomodacaoSpecification.comodidades(consultaForm.getComodidades()));
 		}
-		
+
 		if (consultaForm.getInicioReserva() != null && consultaForm.getFimReserva() != null) {
 			builderSpecification = builderSpecification.and(AcomodacaoSpecification
 					.periodoNaoOcupado(consultaForm.getInicioReserva(), consultaForm.getFimReserva()));
 		}
-		
 
-		return this.repository.findAll(builderSpecification, pageable);
+		return builderSpecification;
 	}
 }

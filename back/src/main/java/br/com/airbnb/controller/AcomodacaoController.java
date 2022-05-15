@@ -71,4 +71,10 @@ public class AcomodacaoController {
 		return ResponseEntity.ok(acomodacoes);
 	}
 
+	@PostMapping("/consulta-sumarizada")
+	public ResponseEntity<Long> consultaSumarizada(@RequestBody ConsultaForm form) {
+		long quantidade = this.service.consultaSumarizada(form);
+		return ResponseEntity.ok(quantidade);
+	}
+
 }
