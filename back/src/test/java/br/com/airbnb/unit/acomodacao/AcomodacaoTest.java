@@ -1,4 +1,4 @@
-package br.com.airbnb.acomodacao;
+package br.com.airbnb.unit.acomodacao;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

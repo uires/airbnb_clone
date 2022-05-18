@@ -6,12 +6,10 @@ import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Hospedes {
 
 	@Getter
@@ -29,7 +27,5 @@ public class Hospedes {
 	@Getter
 	@Column(nullable = false)
 	private Integer animais;
-	
-	
 
 }
