@@ -21,7 +21,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ConsultaForm {
 
-	@NotNull
 	@Max(value = 5)
 	private Integer adultos;
 
