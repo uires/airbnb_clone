@@ -89,4 +89,12 @@ public class AcomodacaoServiceTest {
 		this.acomodacaoRepository.save(acomodacaoDois);
 	}
 
+	@Test
+	void testaConsultaPorDataReserva() {
+		ConsultaForm consultaForm = new ConsultaForm(2, null, null, false, null, new BigDecimal("30.00"),
+				new BigDecimal("31.00"), null, null, null, null, null, null);
+		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
+		assertEquals(0, consultaSumarizadaResultado);
+	}
+
 }
