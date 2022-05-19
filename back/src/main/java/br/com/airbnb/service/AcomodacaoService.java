@@ -133,7 +133,7 @@ public class AcomodacaoService {
 					.and(AcomodacaoSpecification.quantidadeCriancas(consultaForm.getCriancas()));
 		}
 
-		if (consultaForm.getComodidades().size() > 0) {
+		if (consultaForm.getComodidades() != null && consultaForm.getComodidades().size() > 0) {
 			builderSpecification = builderSpecification
 					.and(AcomodacaoSpecification.comodidades(consultaForm.getComodidades()));
 		}
