@@ -90,7 +90,7 @@ public class AcomodacaoServiceTest {
 	}
 
 	@Test
-	void testaConsultaPorDataReserva() {
+	void testaConsultaPorPrecoInicialEFinal() {
 		ConsultaForm consultaForm = new ConsultaForm(2, null, null, false, null, new BigDecimal("30.00"),
 				new BigDecimal("31.00"), null, null, null, null, null, null);
 		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
