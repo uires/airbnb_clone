@@ -112,5 +112,13 @@ public class AcomodacaoServiceTest {
 		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
 		assertEquals(2, consultaSumarizadaResultado);
 	}
+	
+	@Test
+	void testaConsultaSumarizadaPorTipoAcomodacao() {
+		ConsultaForm consultaForm = new ConsultaForm(null, null, null, false, null, new BigDecimal("30.00"),
+				new BigDecimal("50000.00"), TipoLugar.CASA, null, null, null, null, null);
+		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
+		assertEquals(2, consultaSumarizadaResultado);
+	}
 
 }
