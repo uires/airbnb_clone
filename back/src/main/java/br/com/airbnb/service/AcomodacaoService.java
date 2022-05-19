@@ -113,22 +113,22 @@ public class AcomodacaoService {
 			builderSpecification = builderSpecification.and(AcomodacaoSpecification.tipoLocal(consultaForm.getLugar()));
 		}
 
-		if (consultaForm.getAnimais() != 0) {
+		if (consultaForm.getAnimais() != null) {
 			builderSpecification = builderSpecification
 					.and(AcomodacaoSpecification.quantidadeAnimais(consultaForm.getAnimais()));
 		}
 
-		if (consultaForm.getBebes() != 0) {
+		if (consultaForm.getBebes() != null) {
 			builderSpecification = builderSpecification
 					.and(AcomodacaoSpecification.quantidadeBebes(consultaForm.getBebes()));
 		}
 
-		if (consultaForm.getAdultos() != 0) {
+		if (consultaForm.getAdultos() != null) {
 			builderSpecification = builderSpecification
 					.and(AcomodacaoSpecification.quantidadeAdultos(consultaForm.getAdultos()));
 		}
 
-		if (consultaForm.getCriancas() != 0) {
+		if (consultaForm.getCriancas() != null) {
 			builderSpecification = builderSpecification
 					.and(AcomodacaoSpecification.quantidadeCriancas(consultaForm.getCriancas()));
 		}
