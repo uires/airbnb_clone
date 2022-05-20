@@ -188,8 +188,8 @@ public class Reserva {
 	}
 
 	public void adicionaHorarioCheckInOut(LocalTime horarioCheckIn, LocalTime horarioCheckOut) {
-		this.inicioReserva.with(horarioCheckIn);
-		this.fimReserva.with(horarioCheckOut);
+		this.inicioReserva = this.inicioReserva.with(horarioCheckIn);
+		this.fimReserva = this.fimReserva.with(horarioCheckOut);
 	}
 
 }
