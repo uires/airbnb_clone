@@ -90,10 +90,12 @@ public class AcomodacaoServiceTest {
 
 		// Terceira acomodação
 		Hospedes hospedesTres = new Hospedes(3, 2, 0, 0);
-		Acomodacao acomodacaoTres = new Acomodacao(TipoLugar.CASA, null, hospedesTres, null,
+		Acomodacao acomodacaoTres = new Acomodacao(TipoLugar.CASA, null, hospedesTres,
+				Arrays.asList(Espaco.AREA_DE_JANTAR_EXTERNA, Espaco.JACUZZI),
 				new Precificacao(new BigDecimal("3550.00"), null, false), new BigDecimal("75.00"),
-				new BigDecimal("55.00"), "Espaço Julinda", Arrays.asList(Destaque.IDEAL_PARA_FAMILIAS),
-				"Espaço Julinda", usuario, LocalTime.NOON, LocalTime.NOON, false, quantidadesComodos, 3);
+				new BigDecimal("55.00"), "Espaço Julinda",
+				Arrays.asList(Destaque.IDEAL_PARA_FAMILIAS, Destaque.TRANQUILA), "Espaço Julinda", usuario,
+				LocalTime.NOON, LocalTime.NOON, false, quantidadesComodos, 3);
 
 		this.acomodacaoRepository.save(acomodacaoTres);
 	}
@@ -125,6 +127,14 @@ public class AcomodacaoServiceTest {
 	@Test
 	void testaConsultaSumarizadaPorPermissaoAnimal() {
 		ConsultaForm consultaForm = new ConsultaForm(null, null, null, false, 3, new BigDecimal("30.00"),
+				new BigDecimal("50000.00"), null, null, null, null, null, null);
+		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
+		assertEquals(1, consultaSumarizadaResultado);
+	}
+
+	@Test
+	void testaConsultaSumarizadaPorAdulto() {
+		ConsultaForm consultaForm = new ConsultaForm(2, null, null, false, null, new BigDecimal("30.00"),
 				new BigDecimal("50000.00"), null, null, null, null, null, null);
 		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
 		assertEquals(1, consultaSumarizadaResultado);
