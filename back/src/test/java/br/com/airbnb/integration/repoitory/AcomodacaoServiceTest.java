@@ -140,7 +140,7 @@ public class AcomodacaoServiceTest {
 		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
 		assertEquals(1, consultaSumarizadaResultado);
 	}
-	
+
 	@Test
 	void testaConsultaSumarizadaPorCriancas() {
 		ConsultaForm consultaForm = new ConsultaForm(null, 2, null, false, null, new BigDecimal("30.00"),
@@ -148,14 +148,33 @@ public class AcomodacaoServiceTest {
 		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
 		assertEquals(2, consultaSumarizadaResultado);
 	}
-	
-	
+
 	@Test
 	void testaConsultaSumarizadaPorBebes() {
 		ConsultaForm consultaForm = new ConsultaForm(null, null, 1, false, null, new BigDecimal("30.00"),
 				new BigDecimal("50000.00"), null, null, null, null, null, null);
 		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
 		assertEquals(1, consultaSumarizadaResultado);
+	}
+
+	@Test
+	void testaConsultaSumarizadaPorDataNaoOcupada() {
+		ConsultaForm consultaForm = new ConsultaForm(null, null, null, false, null, new BigDecimal("30.00"),
+				new BigDecimal("50000.00"), null, null, null, null,
+				LocalDateTime.now().with(LocalTime.of(12, 00)).plusDays(1L),
+				LocalDateTime.now().with(LocalTime.of(12, 00)).plusDays(4L));
+
+		long consultaSumarizadaResultado = this.acomodacaoService.consultaSumarizada(consultaForm);
+
+		ConsultaForm consulta = new ConsultaForm(null, null, null, false, null, new BigDecimal("30.00"),
+				new BigDecimal("50000.00"), null, null, null, null,
+				LocalDateTime.now().with(LocalTime.of(12, 00)).plusDays(10L),
+				LocalDateTime.now().with(LocalTime.of(12, 00)).plusDays(15L));
+
+		long consultaResultadoPeriodoNaoOcupado = this.acomodacaoService.consultaSumarizada(consulta);
+
+		assertEquals(2, consultaSumarizadaResultado);
+		assertEquals(3, consultaResultadoPeriodoNaoOcupado);
 	}
 
 }
