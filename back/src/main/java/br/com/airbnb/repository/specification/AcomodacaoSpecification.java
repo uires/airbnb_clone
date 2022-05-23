@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -84,8 +86,21 @@ public class AcomodacaoSpecification {
 
 	public static Specification<Acomodacao> periodoNaoOcupado(LocalDateTime inicioReserva, LocalDateTime fimReserva) {
 		return (root, query, criteriaBuilder) -> {
+			query.distinct(true);
 			Join<Acomodacao, Reserva> reservaJoin = root.join("reservas");
-			return criteriaBuilder.between(reservaJoin.get("inicioReserva"), inicioReserva, fimReserva).not();
+
+			Predicate predicateInicio = criteriaBuilder.lessThanOrEqualTo(reservaJoin.get("inicioReserva"), fimReserva);
+			Predicate predicateFim = criteriaBuilder.greaterThanOrEqualTo(reservaJoin.get("fimReserva"), inicioReserva);
+
+			return criteriaBuilder.and(predicateInicio, predicateFim).not();
+		};
+	}
+
+	public static Specification<Acomodacao> acomodacaoSemReserva() {
+		return (root, query, criteriaBuilder) -> {
+			query.distinct(true);
+			Join<Acomodacao, Reserva> reservaJoin = root.join("reservas", JoinType.LEFT);
+			return reservaJoin.isNull();
 		};
 	}
 
