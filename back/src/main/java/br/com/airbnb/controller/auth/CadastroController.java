@@ -28,7 +28,7 @@ public class CadastroController {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-	@PostMapping
+	@PostMapping("/cadastro")
 	public ResponseEntity<Usuario> cadastro(@RequestBody @Valid CadastroForm form) {
 		form.setSenha(this.encoder.encode(form.getSenha()));
 		Usuario usuario = this.usuarioService.cadastraUsuario(form.converte());
