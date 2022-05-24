@@ -125,9 +125,4 @@ public class Usuario implements UserDetails {
 		this.foto = foto;
 	}
 
-	@Override
-	public String toString() {
-		return "Usuario [foto=" + foto + "]";
-	}
-
 }
