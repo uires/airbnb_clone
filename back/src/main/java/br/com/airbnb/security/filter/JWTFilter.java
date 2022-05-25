@@ -9,14 +9,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import br.com.airbnb.service.security.TokenService;
+
 public class JWTFilter extends OncePerRequestFilter {
+
+	private TokenService tokenService;
+
+	public JWTFilter(TokenService tokenService) {
+		this.tokenService = tokenService;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
 		String token = this.getCabecalhoToken(request);
-		System.out.println(token);
+		this.tokenService.isTokenValido(token);
 		filterChain.doFilter(request, response);
 	}
 
