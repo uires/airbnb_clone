@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import lombok.Setter;
 
@@ -23,4 +24,7 @@ public class LoginForm {
 	@Length(max = 16, min = 8)
 	private String senha;
 
+	public UsernamePasswordAuthenticationToken converte() {
+		return new UsernamePasswordAuthenticationToken(this.email, this.senha);
+	}
 }

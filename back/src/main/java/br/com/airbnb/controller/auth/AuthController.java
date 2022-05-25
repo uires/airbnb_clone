@@ -4,6 +4,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.airbnb.controller.auth.dto.TokenDTO;
 import br.com.airbnb.controller.auth.form.CadastroForm;
 import br.com.airbnb.controller.auth.form.LoginForm;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.service.UsuarioService;
+import br.com.airbnb.service.security.TokenService;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,6 +33,12 @@ public class AuthController {
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private TokenService tokenService;
 
 	@PostMapping("/cadastro")
 	public ResponseEntity<Usuario> cadastro(@RequestBody @Valid CadastroForm form) {
@@ -46,8 +57,14 @@ public class AuthController {
 
 	@PostMapping
 	public ResponseEntity<?> login(@RequestBody @Valid LoginForm loginForm) {
-
-		return null;
+		UsernamePasswordAuthenticationToken user = loginForm.converte();
+		try {
+			Authentication authenticate = this.authenticationManager.authenticate(user);
+			String token = this.tokenService.geraToken(authenticate);
+			return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
+		} catch (Exception exception) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 }
