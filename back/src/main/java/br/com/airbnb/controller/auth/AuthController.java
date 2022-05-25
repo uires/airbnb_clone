@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.airbnb.controller.auth.form.CadastroForm;
+import br.com.airbnb.controller.auth.form.LoginForm;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.service.UsuarioService;
 
 @RestController
 @RequestMapping("/auth")
-public class CadastroController {
+public class AuthController {
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -41,6 +42,12 @@ public class CadastroController {
 
 		Usuario usuario = this.usuarioService.uploadImagem(id, file);
 		return ResponseEntity.ok(usuario);
+	}
+
+	@PostMapping
+	public ResponseEntity<?> login(@RequestBody @Valid LoginForm loginForm) {
+
+		return null;
 	}
 
 }
