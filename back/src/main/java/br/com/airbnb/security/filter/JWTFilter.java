@@ -6,17 +6,24 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import br.com.airbnb.domain.usuario.Usuario;
+import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.service.security.TokenService;
 
 public class JWTFilter extends OncePerRequestFilter {
 
 	private TokenService tokenService;
+	private UsuarioRepository usuarioRepository;
 
-	public JWTFilter(TokenService tokenService) {
+	public JWTFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
 		this.tokenService = tokenService;
+		this.usuarioRepository = usuarioRepository;
 	}
 
 	@Override
@@ -24,8 +31,23 @@ public class JWTFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String token = this.getCabecalhoToken(request);
-		this.tokenService.isTokenValido(token);
+		boolean valido = this.tokenService.isTokenValido(token);
+
+		if (valido) {
+			this.autorizar(token);
+		}
+
 		filterChain.doFilter(request, response);
+	}
+
+	@Transactional
+	private void autorizar(String token) {
+		Long idUsuario = this.tokenService.getIdUsuario(token);
+		Usuario usuario = this.usuarioRepository.findById(idUsuario).get();
+
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null,
+				usuario.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
 	private String getCabecalhoToken(HttpServletRequest request) {

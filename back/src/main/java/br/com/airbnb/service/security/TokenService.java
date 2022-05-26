@@ -45,4 +45,10 @@ public class TokenService {
 		}
 	}
 
+	public Long getIdUsuario(String token) {
+		Algorithm algorithm = Algorithm.HMAC256(this.secret);
+		JWTVerifier verifier = JWT.require(algorithm).withIssuer("API Airbnb").build();
+		return Long.parseLong(verifier.verify(token).getSubject());
+	}
+
 }

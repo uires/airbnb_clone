@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.security.filter.JWTFilter;
 import br.com.airbnb.service.security.AutenticacacaoService;
 import br.com.airbnb.service.security.TokenService;
@@ -27,6 +28,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private TokenService tokenService;
 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/acomodacao/consulta-acomodacao").permitAll()
@@ -34,7 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/acomodacao/{id}").permitAll().antMatchers(HttpMethod.POST, "/auth/**")
 				.permitAll().anyRequest().authenticated().and().csrf().disable().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.addFilterBefore(new JWTFilter(this.tokenService), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new JWTFilter(this.tokenService, usuarioRepository),
+						UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
