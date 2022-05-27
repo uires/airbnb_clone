@@ -1,7 +1,6 @@
 package br.com.airbnb.controller.form;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +14,6 @@ import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.Usuario;
-import br.com.airbnb.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,15 +48,9 @@ public class ReservaForm {
 	@Length(max = 1000)
 	private String informacoes;
 
-	public Reserva converte(UsuarioRepository usuarioRepository, Acomodacao acomodacao) {
-		Optional<Usuario> usuario = usuarioRepository.findById(1L);
-
-		if (!usuario.isPresent()) {
-			throw new IllegalArgumentException("");
-		}
-
+	public Reserva converte(Usuario usuario, Acomodacao acomodacao) {
 		Hospedes hospedes = new Hospedes(adultos, criancas, bebes, animais);
-		return new Reserva(inicioReserva, fimReserva, LocalDateTime.now(), hospedes, usuario.get(), acomodacao);
+		return new Reserva(inicioReserva, fimReserva, LocalDateTime.now(), hospedes, usuario, acomodacao);
 	}
 
 }

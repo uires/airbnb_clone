@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import br.com.airbnb.controller.exception.EntityNotFoundException;
 import br.com.airbnb.controller.form.AcomodacaoForm;
 import br.com.airbnb.controller.form.ConsultaForm;
 import br.com.airbnb.domain.acomodacao.Acomodacao;
-import br.com.airbnb.repository.UsuarioRepository;
+import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.service.AcomodacaoService;
 
 @RestController
@@ -34,16 +35,14 @@ public class AcomodacaoController {
 	@Autowired
 	private AcomodacaoService service;
 
-	// Tratamento temporário já que não tenho filtro e nem token para definir o
-	// usuário
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-
 	@PostMapping
 	public ResponseEntity<Acomodacao> cadastra(@Valid @RequestBody AcomodacaoForm form,
 			UriComponentsBuilder uriComponentsBuilder) {
-		Acomodacao acomodacao = form.converte(usuarioRepository);
+		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Acomodacao acomodacao = form.converte(usuario);
+
 		acomodacao = this.service.cadastraAcomodacao(acomodacao);
+
 		URI uri = uriComponentsBuilder.path("/acomodacao/{id}").buildAndExpand(acomodacao.getId()).toUri();
 		return ResponseEntity.created(uri).body(acomodacao);
 	}

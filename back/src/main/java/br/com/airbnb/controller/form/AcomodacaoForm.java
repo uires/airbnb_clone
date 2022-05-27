@@ -3,7 +3,6 @@ package br.com.airbnb.controller.form;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +15,6 @@ import br.com.airbnb.domain.acomodacao.Precificacao;
 import br.com.airbnb.domain.acomodacao.QuantidadesComodos;
 import br.com.airbnb.domain.acomodacao.TipoLugar;
 import br.com.airbnb.domain.usuario.Usuario;
-import br.com.airbnb.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -93,13 +91,7 @@ public class AcomodacaoForm {
 
 	private boolean permiteAnimais;
 
-	public Acomodacao converte(UsuarioRepository usuarioRepository) {
-		Optional<Usuario> usuario = usuarioRepository.findById(1L);
-
-		if (!usuario.isPresent()) {
-			throw new IllegalArgumentException("");
-		}
-
+	public Acomodacao converte(Usuario usuario) {
 		Endereco endereco = new Endereco(null, rua, estado, cidade, null, codigoPostal);
 
 		Hospedes hospedes = new Hospedes(this.adultos, this.criancas, this.bebes, this.animais);
@@ -107,7 +99,7 @@ public class AcomodacaoForm {
 		Precificacao precoPernoite = new Precificacao(precoNoite, precoMensal, permiteDescontoTresPrimeirosHospedes);
 
 		return new Acomodacao(lugar, endereco, hospedes, espacos, precoPernoite, taxaDeServico, taxaDeLimpeza,
-				descricao, destaques, titulo, usuario.get(), horarioCheckIn, horarioCheckOut, permiteAnimais,
+				descricao, destaques, titulo, usuario, horarioCheckIn, horarioCheckOut, permiteAnimais,
 				quantidadesComodos, camas);
 	}
 
