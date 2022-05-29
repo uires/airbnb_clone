@@ -9,9 +9,15 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.airbnb.domain.usuario.Usuario;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class CadastroForm {
-	
+
 	@NotBlank
 	@NotEmpty
 	@NotNull
@@ -47,64 +53,6 @@ public class CadastroForm {
 
 	@NotNull
 	private boolean permiteEmailDeMarketing;
-
-	public CadastroForm() { }
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getMatchSenha() {
-		return matchSenha;
-	}
-
-	public void setMatchSenha(String matchSenha) {
-		this.matchSenha = matchSenha;
-	}
-
-	public String getPrimeiroNome() {
-		return primeiroNome;
-	}
-
-	public void setPrimeiroNome(String primeiroNome) {
-		this.primeiroNome = primeiroNome;
-	}
-
-	public String getSegundoNome() {
-		return segundoNome;
-	}
-
-	public void setSegundoNome(String segundoNome) {
-		this.segundoNome = segundoNome;
-	}
-
-	public boolean isPermiteEmailDeMarketing() {
-		return permiteEmailDeMarketing;
-	}
-
-	public void setPermiteEmailDeMarketing(boolean permiteEmailDeMarketing) {
-		this.permiteEmailDeMarketing = permiteEmailDeMarketing;
-	}
-	
-	public String getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
 
 	public Usuario converte() {
 
