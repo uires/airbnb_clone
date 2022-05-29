@@ -175,6 +175,10 @@ public class Reserva {
 			throw new ImpossibilidadeConfirmarException();
 		}
 
+		if (this.reservaConfirmada) {
+			throw new ImpossibilidadeConfirmarException();
+		}
+
 		this.dataConfirmacaoAnfitriao = LocalDateTime.now();
 		this.reservaConfirmada = true;
 	}

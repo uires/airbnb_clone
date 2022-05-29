@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ImpossibilidadeConfirmarException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
 
-	private final String message = "Não é possível confirmar uma reserva cancelada";
+	private final String message = "Não é possível confirmar uma reserva cancelada ou aprovada";
 
 	@Override
 	public String getMessage() {

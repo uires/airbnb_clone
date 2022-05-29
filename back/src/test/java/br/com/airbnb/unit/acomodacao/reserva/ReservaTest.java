@@ -21,6 +21,7 @@ import br.com.airbnb.domain.acomodacao.Destaque;
 import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.Precificacao;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
+import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeConfirmarException;
 import br.com.airbnb.domain.acomodacao.exception.IntervaloDeReservaInvalidoException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelAdicionaReserva90DiasAFrenteException;
 import br.com.airbnb.domain.acomodacao.exception.NaoEhPossivelCadastrarUmaReservaNoPassadoException;
@@ -187,6 +188,22 @@ public class ReservaTest {
 		assertNotNull(reservaUm.getDataConfirmacaoAnfitriao());
 		assertTrue(reservaUm.isReservaConfirmada());
 		assertFalse(reservaUm.isReservaCancelada());
+	}
+
+	/**
+	 * Válida lançamento exception ao aprovar reserva já aprovada
+	 */
+	@Test
+	public void testaAprovacaoReservaJaAprovada() {
+		var hospedes = new Hospedes(3, 0, 0, 0);
+		this.acomodacao.atualizaAcomodacao(new Precificacao(new BigDecimal("500"), null, false));
+		var reservaUm = new Reserva(LocalDateTime.now().plusDays(1L), LocalDateTime.now().plusDays(4L),
+				LocalDateTime.now(), hospedes, new Usuario(), acomodacao);
+
+		this.acomodacao.adicionaReserva(reservaUm);
+		reservaUm.aprova();
+
+		assertThrows(ImpossibilidadeConfirmarException.class, () -> reservaUm.aprova());
 	}
 
 	/**
