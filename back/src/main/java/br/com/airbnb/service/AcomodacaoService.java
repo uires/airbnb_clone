@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.airbnb.controller.form.ConsultaForm;
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.acomodacao.Foto;
+import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.repository.AcomodacaoRepository;
 import br.com.airbnb.repository.specification.AcomodacaoSpecification;
+import br.com.airbnb.service.exception.NaoPossuiPermissaoAlterarException;
 import br.com.airbnb.service.image.ImageResponse;
 import br.com.airbnb.service.image.ImageService;
 
@@ -38,6 +41,22 @@ public class AcomodacaoService {
 
 	@Transactional
 	public Acomodacao cadastraFotos(Long id, MultipartFile[] fotos) {
+		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Optional<Acomodacao> acomodacaoOptional = this.repository.findById(id);
+
+		if (!acomodacaoOptional.isPresent()) {
+			throw new IllegalArgumentException();
+		}
+
+		Acomodacao acomodacao = acomodacaoOptional.get();
+		
+		if(!usuario.getId().equals(acomodacao.getUsuario().getId())) {
+			throw new NaoPossuiPermissaoAlterarException();
+		}
+
+		if (!usuario.getId().equals(acomodacao.getUsuario().getId())) {
+			throw new NaoPossuiPermissaoAlterarException();
+		}
 
 		Arrays.asList(fotos).stream().forEach(foto -> {
 			if ((foto.getSize() / 1024.00) > 500) {
@@ -49,14 +68,6 @@ public class AcomodacaoService {
 				throw new IllegalArgumentException("A extensão do arquivo é inválida");
 			}
 		});
-
-		Optional<Acomodacao> acomodacaoOptional = this.repository.findById(id);
-
-		if (!acomodacaoOptional.isPresent()) {
-			throw new IllegalArgumentException();
-		}
-
-		Acomodacao acomodacao = acomodacaoOptional.get();
 
 		List<ImageResponse> listaImagens = this.imageService.uploadMany(fotos);
 		List<Foto> listaFotos = listaImagens.stream()
