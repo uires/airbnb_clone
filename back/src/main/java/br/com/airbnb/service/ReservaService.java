@@ -41,7 +41,7 @@ public class ReservaService {
 		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (!usuario.getId().equals(reserva.getHospede().getId())
-				|| !usuario.getId().equals(reserva.getAcomodacao().getUsuario().getId())) {
+				&& !usuario.getId().equals(reserva.getAcomodacao().getUsuario().getId())) {
 			throw new NaoPossuiPermissaoAlterarException();
 		}
 
