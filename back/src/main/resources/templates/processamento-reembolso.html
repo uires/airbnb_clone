@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{template-email :: layout(~{::section})}">
+<head>
+<meta charset="UTF-8" />
+</head>
 <section>
-	<p>Page content</p>
-	<div>Included on page</div>
+	<p>
+	<h1>Olá, [[${reembolso.reserva.hospede.nome}]]</h1>
+	A sua reserva de código #[[${reembolso.reserva.id}]] foi reembolsada
+	com sucesso.
+	</p>
+
+	<h4>Valor total do reembolso: R$ [[
+		${#numbers.formatDecimal(reembolso.valor, 3, 'POINT', 2, 'COMMA')}]]</h4>
 </section>
 </body>
 </html>
