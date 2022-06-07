@@ -74,13 +74,13 @@ public class ResevaServiceTest {
 
 		String senha = encoder.encode("123456");
 		Usuario usuario = new Usuario(null, "First", "Second", null, "ddd@gmail.com", LocalDate.now(), false, false,
-				senha, null);
+				senha, null, null);
 
 		Usuario usuarioDois = new Usuario(null, "Second", "First", null, "ccc@gmail.com", LocalDate.now(), false, false,
-				senha, null);
+				senha, null, null);
 
 		Usuario usuarioTres = new Usuario(null, "Second", "First", null, "aaa@gmail.com", LocalDate.now(), false, false,
-				senha, null);
+				senha, null, null);
 
 		usuario = this.usuarioRepository.save(usuario);
 		usuarioDois = this.usuarioRepository.save(usuarioDois);
