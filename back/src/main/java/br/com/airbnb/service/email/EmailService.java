@@ -36,7 +36,7 @@ public class EmailService {
 		helper.setFrom(this.de);
 		helper.setTo(email.getPara());
 		helper.setSubject("Airbnb - " + email.getAssunto());
-		String html = this.templateEngine.process("processamento-reembolso.html", context);
+		String html = this.templateEngine.process(email.getTempleteHtml(), context);
 		helper.setText(html, true);
 
 		this.emailSender.send(message);

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,6 +66,11 @@ public class AuthController {
 		} catch (Exception exception) {
 			return ResponseEntity.badRequest().build();
 		}
+	}
+
+	@GetMapping("/ativar-registro/{codigo}")
+	public ResponseEntity<?> ativaRegistro(@PathVariable(required = true, name = "codigo") String codigoVerificacao) {
+		return null;
 	}
 
 }
