@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{template-email :: layout(~{::section})}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<section>
+	<p>
+	<h1>Olá, [[${usuario.nome}]]</h1>
+	Para ativar a sua conta clique no link abaixo:
+	</p>
+	
+	<a th:href="@{'/auth/ativar-registro/' + ${usuario.codigoVerificacao}}">Confirmar
+		registro</a>
+
+</section>
+</body>
+</html>
