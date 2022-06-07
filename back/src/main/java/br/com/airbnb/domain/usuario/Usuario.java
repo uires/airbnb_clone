@@ -72,6 +72,9 @@ public class Usuario implements UserDetails {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private List<Acomodacao> acomodacoes;
+	
+	@Getter
+	private String codigoVerificacao;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
