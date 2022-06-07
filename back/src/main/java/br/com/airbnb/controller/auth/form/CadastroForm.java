@@ -12,6 +12,7 @@ import br.com.airbnb.domain.usuario.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.bytebuddy.utility.RandomString;
 
 @Getter
 @Setter
@@ -55,8 +56,7 @@ public class CadastroForm {
 	private boolean permiteEmailDeMarketing;
 
 	public Usuario converte() {
-
 		return new Usuario(null, primeiroNome, segundoNome, null, email, LocalDate.parse(dataNascimento),
-				permiteEmailDeMarketing, false, senha, null);
+				permiteEmailDeMarketing, false, senha, null, RandomString.make(155));
 	}
 }
