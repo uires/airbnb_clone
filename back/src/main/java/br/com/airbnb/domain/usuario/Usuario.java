@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
+import br.com.airbnb.domain.usuario.exception.ImpossibilidadeAprovarRegistroException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -72,7 +73,7 @@ public class Usuario implements UserDetails {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private List<Acomodacao> acomodacoes;
-	
+
 	@Getter
 	private String codigoVerificacao;
 
@@ -126,6 +127,14 @@ public class Usuario implements UserDetails {
 
 	public void adicionaFoto(Foto foto) {
 		this.foto = foto;
+	}
+
+	public void aprovaRegistro() {
+		if (this.enabled) {
+			throw new ImpossibilidadeAprovarRegistroException();
+		}
+
+		this.enabled = true;
 	}
 
 }
