@@ -69,8 +69,10 @@ public class AuthController {
 	}
 
 	@GetMapping("/ativar-registro/{codigo}")
-	public ResponseEntity<?> ativaRegistro(@PathVariable(required = true, name = "codigo") String codigoVerificacao) {
-		return null;
+	public ResponseEntity<Usuario> ativaRegistro(
+			@PathVariable(required = true, name = "codigo") String codigoVerificacao) {
+		Usuario usuario = this.usuarioService.aprovaRegistro(codigoVerificacao);
+		return ResponseEntity.ok(usuario);
 	}
 
 }

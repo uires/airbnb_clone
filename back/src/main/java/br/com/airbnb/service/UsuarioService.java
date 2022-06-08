@@ -77,6 +77,32 @@ public class UsuarioService {
 		return usuario;
 	}
 
+	/**
+	 * Aprova o usuário conforme código verificação enviado
+	 * 
+	 * @throws EntityNotFoundException
+	 * @param codigoVerificacao
+	 * @return retornar o usuário aprovado
+	 */
+	@Transactional
+	public Usuario aprovaRegistro(String codigoVerificacao) {
+		Optional<Usuario> optional = this.usuarioRepository.findByCodigoVerificacao(codigoVerificacao);
+
+		if (!optional.isPresent()) {
+			throw new EntityNotFoundException();
+		}
+
+		Usuario usuario = optional.get();
+		usuario.aprovaRegistro();
+		return usuario;
+	}
+
+	/**
+	 * Devolve a estrutura de e-mail para confirmação de registro
+	 * 
+	 * @param usuario
+	 * @return estrutura do e-mail com as informações do usuário e template html
+	 */
 	private Email getEstruturaEmailConfirmacaoRegistro(Usuario usuario) {
 		HashMap<String, Object> valores = new LinkedHashMap<String, Object>();
 		valores.put("usuario", usuario);
