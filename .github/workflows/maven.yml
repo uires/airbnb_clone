@@ -26,4 +26,4 @@ jobs:
       
       run: |
         cd back
-        mvn package
+        mvn test -Dtest="br.com.airbnb.unit.**" package
