@@ -75,4 +75,10 @@ public class AuthController {
 		return ResponseEntity.ok(usuario);
 	}
 
+	@GetMapping("/solicita-recuperacao-senha")
+	public ResponseEntity<?> solicitaReseteSenha() {
+		this.usuarioService.geraTokenRecuperacao();
+		return ResponseEntity.noContent().build();
+	}
+
 }
