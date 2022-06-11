@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/acomodacao/consulta-acomodacao").permitAll()
 				.antMatchers(HttpMethod.POST, "/acomodacao/consulta-sumarizada").permitAll()
-				.antMatchers(HttpMethod.GET, "/acomodacao/{id}").permitAll().antMatchers("/auth/**")
+				.antMatchers(HttpMethod.GET, "/acomodacao/{id}").permitAll().antMatchers(HttpMethod.POST, "/auth/**")
 				.permitAll().anyRequest().authenticated().and().csrf().disable().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(new JWTFilter(this.tokenService, usuarioRepository),
