@@ -1,5 +1,6 @@
 package br.com.airbnb.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Optional;
@@ -15,13 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.airbnb.controller.exception.EntityNotFoundException;
 import br.com.airbnb.domain.email.Email;
 import br.com.airbnb.domain.usuario.Foto;
+import br.com.airbnb.domain.usuario.TokenResetSenha;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.repository.FotoUsuarioRepository;
+import br.com.airbnb.repository.TokenResetSenhaRepository;
 import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.service.email.EmailService;
 import br.com.airbnb.service.exception.NaoPossuiPermissaoAlterarException;
 import br.com.airbnb.service.image.ImageResponse;
 import br.com.airbnb.service.image.ImageService;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class UsuarioService {
@@ -37,6 +41,9 @@ public class UsuarioService {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private TokenResetSenhaRepository tokenSenhaRepository;
 
 	@Transactional
 	public Usuario cadastraUsuario(Usuario usuario) {
@@ -97,6 +104,19 @@ public class UsuarioService {
 		return usuario;
 	}
 
+	@Transactional
+	public void geraTokenRecuperacao() {
+		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		var token = new TokenResetSenha(RandomString.make(155), LocalDateTime.now(), usuario);
+		token = this.tokenSenhaRepository.save(token);
+
+		try {
+			this.emailService.sendHtmlMessage(this.getEstruturaEmailRecuperacaoSenha(usuario, token));
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Devolve a estrutura de e-mail para confirmação de registro
 	 * 
@@ -108,4 +128,19 @@ public class UsuarioService {
 		valores.put("usuario", usuario);
 		return new Email("Confirme sua conta", usuario.getEmail(), "confirmacao-registro.html", valores);
 	}
+
+	/**
+	 * Devolve a estrutura de e-mail para resete de senha
+	 * 
+	 * @param usuario
+	 * @return estrutura do e-mail com as informações do usuário, token e template
+	 *         html
+	 */
+	private Email getEstruturaEmailRecuperacaoSenha(Usuario usuario, TokenResetSenha token) {
+		HashMap<String, Object> valores = new LinkedHashMap<String, Object>();
+		valores.put("usuario", usuario);
+		valores.put("token", token);
+		return new Email("Recupere sua senha", usuario.getEmail(), "recuperacao-senha.html", valores);
+	}
+
 }
