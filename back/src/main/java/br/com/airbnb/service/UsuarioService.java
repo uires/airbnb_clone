@@ -107,7 +107,7 @@ public class UsuarioService {
 	@Transactional
 	public void geraTokenRecuperacao() {
 		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		var token = new TokenResetSenha(RandomString.make(155), LocalDateTime.now(), usuario);
+		TokenResetSenha token = new TokenResetSenha(RandomString.make(155), LocalDateTime.now(), usuario);
 		token = this.tokenSenhaRepository.save(token);
 
 		try {
