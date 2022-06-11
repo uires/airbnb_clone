@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{template-email :: layout(~{::section})}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<section>
+	<p>
+	<h1>Olá, [[${usuario.nome}]]</h1>
+	Para recuperar a sua senha clique no link abaixo:
+	</p>
+
+	<p>[[${token.token}]]</p>
+
+</section>
+</body>
+</html>
