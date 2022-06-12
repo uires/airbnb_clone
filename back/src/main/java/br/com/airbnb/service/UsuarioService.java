@@ -1,15 +1,18 @@
 package br.com.airbnb.service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +26,8 @@ import br.com.airbnb.repository.TokenResetSenhaRepository;
 import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.service.email.EmailService;
 import br.com.airbnb.service.exception.NaoPossuiPermissaoAlterarException;
+import br.com.airbnb.service.exception.auth.SenhaNaoCoincidemException;
+import br.com.airbnb.service.exception.auth.TokenExpiradoException;
 import br.com.airbnb.service.image.ImageResponse;
 import br.com.airbnb.service.image.ImageService;
 import net.bytebuddy.utility.RandomString;
@@ -44,6 +49,9 @@ public class UsuarioService {
 
 	@Autowired
 	private TokenResetSenhaRepository tokenSenhaRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	@Transactional
 	public Usuario cadastraUsuario(Usuario usuario) {
@@ -141,6 +149,30 @@ public class UsuarioService {
 		valores.put("usuario", usuario);
 		valores.put("token", token);
 		return new Email("Recupere sua senha", usuario.getEmail(), "recuperacao-senha.html", valores);
+	}
+
+	@Transactional
+	public void recuperaSenha(String token, @NotNull String senha, @NotNull String matchSenha) {
+		if (!senha.equals(matchSenha)) {
+			throw new SenhaNaoCoincidemException();
+		}
+
+		Optional<TokenResetSenha> optional = this.tokenSenhaRepository.findByToken(token);
+		if (!optional.isPresent()) {
+			throw new EntityNotFoundException();
+		}
+
+		TokenResetSenha tokenResetSenha = optional.get();
+
+		long tempoEmHorasCriacaoToken = ChronoUnit.HOURS.between(tokenResetSenha.getDataExpiracao(),
+				LocalDateTime.now());
+
+		if (tempoEmHorasCriacaoToken >= 24L) {
+			throw new TokenExpiradoException();
+		}
+
+		Usuario usuario = tokenResetSenha.getUsuario();
+		usuario.alteraSenha(this.encoder.encode(senha));
 	}
 
 }

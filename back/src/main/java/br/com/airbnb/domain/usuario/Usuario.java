@@ -137,4 +137,8 @@ public class Usuario implements UserDetails {
 		this.enabled = true;
 	}
 
+	public void alteraSenha(String senha) {
+		this.senha = senha;
+	}
+
 }
