@@ -9,24 +9,11 @@ import org.hibernate.validator.constraints.Length;
 import lombok.Getter;
 
 @Getter
-public class RecuperacaoSenhaForm {
+public class EmailRecuperacaoForm {
 
 	@NotBlank
 	@NotEmpty
 	@NotNull
-	@Length(max = 155, min = 155)
-	private String token;
-	
-	@NotBlank
-	@NotEmpty
-	@NotNull
-	@Length(max = 16, min = 8)
-	private String senha;
-
-	@NotBlank
-	@NotEmpty
-	@NotNull
-	@Length(max = 16, min = 8)
-	private String matchSenha;
-
+	@Length(max = 255, min = 5)
+	private String email;
 }

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.airbnb.controller.auth.dto.TokenDTO;
 import br.com.airbnb.controller.auth.form.CadastroForm;
+import br.com.airbnb.controller.auth.form.EmailRecuperacaoForm;
 import br.com.airbnb.controller.auth.form.LoginForm;
 import br.com.airbnb.controller.auth.form.RecuperacaoSenhaForm;
 import br.com.airbnb.domain.usuario.Usuario;
@@ -76,17 +77,16 @@ public class AuthController {
 		return ResponseEntity.ok(usuario);
 	}
 
-	@GetMapping("/solicita-recuperacao-senha")
-	public ResponseEntity<?> solicitaRecuperacaoSenha() {
-		this.usuarioService.geraTokenRecuperacao();
+	@PostMapping("/solicita-recuperacao-senha")
+	public ResponseEntity<?> solicitaRecuperacaoSenha(@RequestBody @Valid EmailRecuperacaoForm form) {
+		this.usuarioService.geraTokenRecuperacao(form.getEmail());
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/{token}")
-	public ResponseEntity<?> recuperaSenha(@PathVariable(required = true) String token,
-			@RequestBody @Valid RecuperacaoSenhaForm form) {
-		//String token = this.usuarioService.recuperaSenha(token, form.getSenha(), form.getMatchSenha());
-		return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
+	@PostMapping("/atualiza-senha")
+	public ResponseEntity<?> recuperaSenha(@RequestBody @Valid RecuperacaoSenhaForm form) {
+		this.usuarioService.recuperaSenha(form.getToken(), form.getSenha(), form.getMatchSenha());
+		return ResponseEntity.noContent().build();
 	}
 
 }

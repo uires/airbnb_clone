@@ -113,8 +113,13 @@ public class UsuarioService {
 	}
 
 	@Transactional
-	public void geraTokenRecuperacao() {
-		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	public void geraTokenRecuperacao(String email) {
+		Optional<Usuario> optional = this.usuarioRepository.findByEmail(email);
+		if (!optional.isPresent()) {
+			throw new EntityNotFoundException();
+		}
+
+		var usuario = optional.get();
 		TokenResetSenha token = new TokenResetSenha(RandomString.make(155), LocalDateTime.now(), usuario);
 		token = this.tokenSenhaRepository.save(token);
 
