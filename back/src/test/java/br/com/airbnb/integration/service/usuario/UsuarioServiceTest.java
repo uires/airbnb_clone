@@ -23,6 +23,7 @@ import br.com.airbnb.repository.TokenResetSenhaRepository;
 import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.service.UsuarioService;
 import br.com.airbnb.service.exception.auth.SenhaNaoCoincidemException;
+import br.com.airbnb.service.exception.auth.TokenExpiradoException;
 import net.bytebuddy.utility.RandomString;
 
 @SpringBootTest
@@ -46,6 +47,7 @@ public class UsuarioServiceTest {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	private String tokenRecuperacaoSenha;
+	private String tokenRecuperacaoSenhaExpirado;
 
 	@BeforeAll
 	public void criaUsuario() {
@@ -64,7 +66,12 @@ public class UsuarioServiceTest {
 		TokenResetSenha tokenResetSenha = new TokenResetSenha(this.tokenRecuperacaoSenha, LocalDateTime.now(),
 				usuarioDois);
 
+		this.tokenRecuperacaoSenhaExpirado = RandomString.make(155);
+		TokenResetSenha tokenResetSenhaExpirado = new TokenResetSenha(this.tokenRecuperacaoSenhaExpirado,
+				LocalDateTime.now().minusDays(2L), usuarioDois);
+
 		this.tokenResetSenhaRepository.save(tokenResetSenha);
+		this.tokenResetSenhaRepository.save(tokenResetSenhaExpirado);
 	}
 
 	@Test
@@ -91,4 +98,12 @@ public class UsuarioServiceTest {
 		assertThrows(SenhaNaoCoincidemException.class, () -> this.usuarioService.recuperaSenha(this.tokenUsuarioDois,
 				this.bCryptPasswordEncoder.encode("123456789"), this.bCryptPasswordEncoder.encode("123459999")));
 	}
+
+	@Test
+	public void testaLancamentoErrorAoResetarComTokenExpirado() {
+		var senha = this.bCryptPasswordEncoder.encode("123456789");
+		assertThrows(TokenExpiradoException.class,
+				() -> this.usuarioService.recuperaSenha(this.tokenRecuperacaoSenhaExpirado, senha, senha));
+	}
+	
 }
