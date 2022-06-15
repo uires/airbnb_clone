@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,13 +12,17 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import br.com.airbnb.controller.exception.EntityNotFoundException;
+import br.com.airbnb.domain.usuario.TokenResetSenha;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.domain.usuario.exception.ImpossibilidadeAprovarRegistroException;
+import br.com.airbnb.repository.TokenResetSenhaRepository;
 import br.com.airbnb.repository.UsuarioRepository;
 import br.com.airbnb.service.UsuarioService;
+import br.com.airbnb.service.exception.auth.SenhaNaoCoincidemException;
 import net.bytebuddy.utility.RandomString;
 
 @SpringBootTest
@@ -34,6 +39,14 @@ public class UsuarioServiceTest {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private TokenResetSenhaRepository tokenResetSenhaRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	private String tokenRecuperacaoSenha;
+
 	@BeforeAll
 	public void criaUsuario() {
 		this.tokenUsuarioUm = RandomString.make(155);
@@ -46,6 +59,12 @@ public class UsuarioServiceTest {
 
 		this.usuarioRepository.save(usuario);
 		this.usuarioRepository.save(usuarioDois);
+
+		this.tokenRecuperacaoSenha = RandomString.make(155);
+		TokenResetSenha tokenResetSenha = new TokenResetSenha(this.tokenRecuperacaoSenha, LocalDateTime.now(),
+				usuarioDois);
+
+		this.tokenResetSenhaRepository.save(tokenResetSenha);
 	}
 
 	@Test
@@ -65,5 +84,11 @@ public class UsuarioServiceTest {
 		assertTrue(usuario.isEnabled());
 		assertThrows(ImpossibilidadeAprovarRegistroException.class,
 				() -> this.usuarioService.aprovaRegistro(this.tokenUsuarioDois));
+	}
+
+	@Test
+	public void testaReseteSenhasDivergentes() {
+		assertThrows(SenhaNaoCoincidemException.class, () -> this.usuarioService.recuperaSenha(this.tokenUsuarioDois,
+				this.bCryptPasswordEncoder.encode("123456789"), this.bCryptPasswordEncoder.encode("123459999")));
 	}
 }
