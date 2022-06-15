@@ -1,5 +1,6 @@
 package br.com.airbnb.integration.service.usuario;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -105,5 +106,19 @@ public class UsuarioServiceTest {
 		assertThrows(TokenExpiradoException.class,
 				() -> this.usuarioService.recuperaSenha(this.tokenRecuperacaoSenhaExpirado, senha, senha));
 	}
-	
+
+	@Test
+	public void testaAlteracaoSenha() {
+		var senhaAntiga = this.tokenResetSenhaRepository.findByToken(this.tokenRecuperacaoSenha).get().getUsuario()
+				.getSenha();
+
+		var senha = "123456789";
+		this.usuarioService.recuperaSenha(this.tokenRecuperacaoSenha, senha, senha);
+
+		var senhaNova = this.tokenResetSenhaRepository.findByToken(this.tokenRecuperacaoSenha).get().getUsuario()
+				.getSenha();
+
+		assertNotEquals(senhaAntiga, senhaNova);
+	}
+
 }
