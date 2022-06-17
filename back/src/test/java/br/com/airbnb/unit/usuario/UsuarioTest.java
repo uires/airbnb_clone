@@ -19,7 +19,7 @@ public class UsuarioTest {
 	@BeforeEach
 	public void criaUsuario() {
 		this.usuario = new Usuario(null, "Aberlado", "Assc", null, "aberlado@g.com", LocalDate.now(), false, false, "",
-				null, RandomString.make(155));
+				null, RandomString.make(155), null);
 	}
 
 	@Test

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.usuario.exception.ImpossibilidadeAprovarRegistroException;
+import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -76,6 +77,10 @@ public class Usuario implements UserDetails {
 
 	@Getter
 	private String codigoVerificacao;
+
+	@Getter
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	private List<Cartao> cartoes;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

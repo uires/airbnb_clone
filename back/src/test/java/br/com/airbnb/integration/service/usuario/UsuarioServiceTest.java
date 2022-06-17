@@ -54,11 +54,11 @@ public class UsuarioServiceTest {
 	public void criaUsuario() {
 		this.tokenUsuarioUm = RandomString.make(155);
 		var usuario = new Usuario(null, "First", "Second", null, "ccc123@gmail.com", LocalDate.now(), false, false,
-				"123", null, this.tokenUsuarioUm);
+				"123", null, this.tokenUsuarioUm, null);
 
 		this.tokenUsuarioDois = RandomString.make(155);
 		var usuarioDois = new Usuario(null, "First", "Second", null, "bbbc123@gmail.com", LocalDate.now(), false, false,
-				"123", null, this.tokenUsuarioDois);
+				"123", null, this.tokenUsuarioDois, null);
 
 		this.usuarioRepository.save(usuario);
 		this.usuarioRepository.save(usuarioDois);

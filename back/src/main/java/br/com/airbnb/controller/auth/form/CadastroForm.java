@@ -57,6 +57,6 @@ public class CadastroForm {
 
 	public Usuario converte() {
 		return new Usuario(null, primeiroNome, segundoNome, null, email, LocalDate.parse(dataNascimento),
-				permiteEmailDeMarketing, false, senha, null, RandomString.make(155));
+				permiteEmailDeMarketing, false, senha, null, RandomString.make(155), null);
 	}
 }

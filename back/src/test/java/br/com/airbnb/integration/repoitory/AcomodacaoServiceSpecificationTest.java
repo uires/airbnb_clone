@@ -56,10 +56,10 @@ public class AcomodacaoServiceSpecificationTest {
 
 		String senha = encoder.encode("123456");
 		Usuario usuario = new Usuario(null, "First", "Second", null, "ddd@gmail.com", LocalDate.now(), false, false,
-				senha, null, null);
+				senha, null, null, null);
 
 		Usuario usuarioDois = new Usuario(null, "Second", "First", null, "ccc@gmail.com", LocalDate.now(), false, false,
-				senha, null, null);
+				senha, null, null, null);
 
 		usuario = this.usuarioRepository.save(usuario);
 		usuarioDois = this.usuarioRepository.save(usuarioDois);
