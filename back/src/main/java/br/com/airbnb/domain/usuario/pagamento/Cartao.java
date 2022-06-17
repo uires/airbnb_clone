@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,12 +38,18 @@ public class Cartao {
 	private LocalDate dataExpiracao;
 
 	@NonNull
-	@Enumerated(EnumType.STRING)
-	private Bandeira bandeira;
-
-	@NonNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
+
+	public Bandeira getBandeira() {
+		return switch (this.numero.substring(0, 1)) {
+		case "3" -> Bandeira.AMERICAN_EXPRESS;
+		case "4" -> Bandeira.VISA;
+		case "5" -> Bandeira.MASTERCARD;
+		case "6" -> Bandeira.ELO;
+		default -> Bandeira.INDEFINIDO;
+		};
+	}
 
 }

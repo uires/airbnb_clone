@@ -146,4 +146,12 @@ public class Usuario implements UserDetails {
 		this.senha = senha;
 	}
 
+	public void adicionarCartacao(Cartao cartao) {
+		if (this.cartoes.size() >= 3) {
+
+		}
+		
+		this.cartoes.add(cartao);
+	}
+	
 }
