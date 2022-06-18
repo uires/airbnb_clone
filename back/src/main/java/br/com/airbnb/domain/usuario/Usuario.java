@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.airbnb.domain.acomodacao.Acomodacao;
 import br.com.airbnb.domain.usuario.exception.ImpossibilidadeAprovarRegistroException;
+import br.com.airbnb.domain.usuario.exception.QtCartaoNaoPermitidaException;
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -148,10 +149,10 @@ public class Usuario implements UserDetails {
 
 	public void adicionarCartacao(Cartao cartao) {
 		if (this.cartoes.size() >= 3) {
-
+			throw new QtCartaoNaoPermitidaException();
 		}
-		
+
 		this.cartoes.add(cartao);
 	}
-	
+
 }
