@@ -21,6 +21,7 @@ import br.com.airbnb.domain.email.Email;
 import br.com.airbnb.domain.usuario.Foto;
 import br.com.airbnb.domain.usuario.TokenResetSenha;
 import br.com.airbnb.domain.usuario.Usuario;
+import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import br.com.airbnb.repository.FotoUsuarioRepository;
 import br.com.airbnb.repository.TokenResetSenhaRepository;
 import br.com.airbnb.repository.UsuarioRepository;
@@ -178,6 +179,14 @@ public class UsuarioService {
 
 		Usuario usuario = tokenResetSenha.getUsuario();
 		usuario.alteraSenha(this.encoder.encode(senha));
+	}
+
+	@Transactional
+	public Usuario adicionaCartao(Cartao cartao) {
+		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		usuario.adicionarCartao(cartao);
+		
+		return usuario;
 	}
 
 }
