@@ -9,9 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,13 +36,11 @@ public class CartaoForm {
 	private String nomeImpresso;
 
 	@NotNull
-	@NotBlank
-	@NotEmpty
-	@DateTimeFormat(pattern = "YYYY-MM")
-	@JsonFormat(pattern = "YYYY-MM")
+	@DateTimeFormat(iso = ISO.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataExpiracao;
 
 	public Cartao converte() {
-		return new Cartao(numero, nomeImpresso, dataExpiracao, null);
+		return new Cartao(numero, nomeImpresso, dataExpiracao, new Usuario());
 	}
 }
