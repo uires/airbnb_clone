@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.airbnb.controller.dto.UsuarioDetalhadoDTO;
 import br.com.airbnb.controller.form.CartaoForm;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.service.UsuarioService;
@@ -19,10 +20,9 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 
 	@PostMapping("/cadastra-cartao")
-	public ResponseEntity<?> cadastraCartao(@RequestBody(required = true) CartaoForm form) {
+	public ResponseEntity<UsuarioDetalhadoDTO> cadastraCartao(@RequestBody(required = true) CartaoForm form) {
 		Usuario usuario = this.usuarioService.adicionaCartao(form.converte());
-
-		return ResponseEntity.ok(usuario);
+		return ResponseEntity.ok(new UsuarioDetalhadoDTO(usuario));
 	}
 
 }

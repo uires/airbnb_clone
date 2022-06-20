@@ -13,7 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +40,6 @@ public class CartaoForm {
 	private LocalDate dataExpiracao;
 
 	public Cartao converte() {
-		return new Cartao(numero, nomeImpresso, dataExpiracao, new Usuario());
+		return new Cartao(numero, nomeImpresso.toUpperCase(), dataExpiracao);
 	}
 }

@@ -72,7 +72,7 @@ public class Usuario implements UserDetails {
 	@JsonIgnore
 	private String senha;
 
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "usuario")
 	@JsonBackReference
 	private List<Acomodacao> acomodacoes;
 
@@ -80,7 +80,7 @@ public class Usuario implements UserDetails {
 	private String codigoVerificacao;
 
 	@Getter
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Cartao> cartoes;
 
 	@Override
@@ -153,6 +153,7 @@ public class Usuario implements UserDetails {
 		}
 
 		this.cartoes.add(cartao);
+		cartao.associaUsuario(this);
 	}
 
 }

@@ -2,6 +2,7 @@ package br.com.airbnb.domain.usuario.pagamento;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import br.com.airbnb.domain.usuario.Usuario;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Cartao {
 
 	@Id
@@ -37,12 +40,12 @@ public class Cartao {
 	@NonNull
 	private LocalDate dataExpiracao;
 
-	@NonNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
 	public Bandeira getBandeira() {
+		System.out.println(this.numero);
 		return switch (this.numero.substring(0, 1)) {
 		case "3" -> Bandeira.AMERICAN_EXPRESS;
 		case "4" -> Bandeira.VISA;
@@ -50,6 +53,10 @@ public class Cartao {
 		case "6" -> Bandeira.ELO;
 		default -> Bandeira.INDEFINIDO;
 		};
+	}
+
+	public void associaUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

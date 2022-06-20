@@ -184,8 +184,10 @@ public class UsuarioService {
 	@Transactional
 	public Usuario adicionaCartao(Cartao cartao) {
 		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		usuario = this.usuarioRepository.findById(usuario.getId()).get();
+
 		usuario.adicionarCartao(cartao);
-		
+		usuario = usuarioRepository.save(usuario);
 		return usuario;
 	}
 
