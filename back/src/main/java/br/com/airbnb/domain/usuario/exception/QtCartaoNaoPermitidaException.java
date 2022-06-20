@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class QtCartaoNaoPermitidaException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
 
-	private final String message = "Não é cadatrar mais do que três cartões";
+	private final String message = "Não é possível cadatrar mais do que três cartões";
 
 	@Override
 	public String getMessage() {
