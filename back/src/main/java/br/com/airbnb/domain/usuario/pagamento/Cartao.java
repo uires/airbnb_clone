@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,6 +44,7 @@ public class Cartao {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
+	@JsonBackReference
 	private Usuario usuario;
 
 	public Bandeira getBandeira() {
