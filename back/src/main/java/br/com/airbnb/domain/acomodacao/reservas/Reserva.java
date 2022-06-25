@@ -106,7 +106,7 @@ public class Reserva {
 	@OneToOne(mappedBy = "reserva")
 	private Avaliacao avaliacao;
 
-	@OneToOne(mappedBy = "reserva")
+	@OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
 	private Pagamento pagamento;
 
 	public boolean isReservaCancelada() {
@@ -199,6 +199,14 @@ public class Reserva {
 	public void adicionaHorarioCheckInOut(LocalTime horarioCheckIn, LocalTime horarioCheckOut) {
 		this.inicioReserva = this.inicioReserva.with(horarioCheckIn);
 		this.fimReserva = this.fimReserva.with(horarioCheckOut);
+	}
+
+	public void adicionaPagamento(Pagamento pagamento) {
+		if (this.pagamento != null) {
+
+		}
+
+		this.pagamento = pagamento;
 	}
 
 }
