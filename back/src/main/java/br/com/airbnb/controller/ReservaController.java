@@ -61,5 +61,4 @@ public class ReservaController {
 		reserva = this.reservaService.aprovaReserva(reserva);
 		return ResponseEntity.noContent().build();
 	}
-
 }
