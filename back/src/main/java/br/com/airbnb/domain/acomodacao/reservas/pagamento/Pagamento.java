@@ -18,6 +18,7 @@ import br.com.airbnb.domain.acomodacao.reservas.pagamento.exception.PgtJaProcess
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -28,7 +29,8 @@ abstract public class Pagamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
-
+	
+	@Setter
 	protected TipoPagamento tipoPagamento;
 
 	protected boolean processado;
@@ -42,7 +44,7 @@ abstract public class Pagamento {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "reserva_id", referencedColumnName = "id", nullable = false)
 	protected Reserva reserva;
-
+	
 	public void processaPagamento() {
 		if (this.processado) {
 			throw new PgtJaProcessadoException();
