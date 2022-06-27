@@ -2,6 +2,7 @@ package br.com.airbnb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,12 +29,21 @@ public class PagamentoController {
 	private CartaoRepository cartaoRepository;
 
 	@PutMapping("/realiza-pagamento-cartao/{idReserva}")
-	public ResponseEntity<Reserva> realizaPagamentoartao(@PathVariable(required = true) Long idReserva,
+	public ResponseEntity<Reserva> realizaPagamentoartao(@PathVariable Long idReserva,
 			@RequestBody PagamentoComCartaoForm form) {
 
 		Reserva reserva = this.reservaService.busca(idReserva);
 		reserva = this.pagamentoService.realizaPagamentoViaCartao(reserva,
 				form.converte(this.cartaoRepository, reserva));
+
+		return ResponseEntity.ok(reserva);
+	}
+
+	@GetMapping("/gera-boleto/{idReserva}")
+	public ResponseEntity<?> geraBoleto(@PathVariable Long idReserva) {
+
+		Reserva reserva = this.reservaService.busca(idReserva);
+		this.pagamentoService.geraBoleto(reserva);
 
 		return ResponseEntity.ok(reserva);
 	}
