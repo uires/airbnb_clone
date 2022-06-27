@@ -15,8 +15,9 @@ public class PagamentoBoleto extends Pagamento {
 	private String numeroBoleto;
 
 	public PagamentoBoleto(Long id, TipoPagamento tipoPagamento, boolean processado, LocalDateTime dataProcessamento,
-			Cartao cartao, Reserva reserva) {
+			Cartao cartao, Reserva reserva, String numeroBoleto) {
 		super(id, tipoPagamento, processado, dataProcessamento, cartao, reserva);
+		this.numeroBoleto = numeroBoleto;
 	}
 
 }
