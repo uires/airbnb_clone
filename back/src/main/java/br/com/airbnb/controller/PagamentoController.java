@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.airbnb.controller.dto.PagamentoBoletoDTO;
 import br.com.airbnb.controller.form.PagamentoComCartaoForm;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
+import br.com.airbnb.domain.acomodacao.reservas.pagamento.PagamentoBoleto;
 import br.com.airbnb.repository.CartaoRepository;
 import br.com.airbnb.service.PagamentoService;
 import br.com.airbnb.service.ReservaService;
@@ -40,11 +42,11 @@ public class PagamentoController {
 	}
 
 	@GetMapping("/gera-boleto/{idReserva}")
-	public ResponseEntity<?> geraBoleto(@PathVariable Long idReserva) {
+	public ResponseEntity<PagamentoBoletoDTO> geraBoleto(@PathVariable Long idReserva) {
 
 		Reserva reserva = this.reservaService.busca(idReserva);
-		this.pagamentoService.geraBoleto(reserva);
+		PagamentoBoleto boleto = this.pagamentoService.geraBoleto(reserva);
 
-		return ResponseEntity.ok(reserva);
+		return ResponseEntity.ok(PagamentoBoletoDTO.builder().numeroBoleto(boleto.getNumeroBoleto()).build());
 	}
 }

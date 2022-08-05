@@ -18,10 +18,12 @@ import br.com.airbnb.domain.acomodacao.reservas.pagamento.exception.PgtJaProcess
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract public class Pagamento {

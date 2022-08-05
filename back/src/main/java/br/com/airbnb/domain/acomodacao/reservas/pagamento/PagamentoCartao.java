@@ -6,13 +6,15 @@ import javax.persistence.Entity;
 
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class PagamentoCartao extends Pagamento {
 
 	public PagamentoCartao(Long id, TipoPagamento tipoPagamento, boolean processado, LocalDateTime dataProcessamento,
 			Cartao cartao, Reserva reserva) {
 		super(id, tipoPagamento, processado, dataProcessamento, cartao, reserva);
 	}
-
+	
 }

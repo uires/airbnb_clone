@@ -13,6 +13,7 @@ import br.com.airbnb.domain.acomodacao.reservas.pagamento.TipoPagamento;
 import br.com.airbnb.domain.usuario.Usuario;
 import br.com.airbnb.repository.PagamentoRepository;
 import br.com.airbnb.service.exception.CartaoInvalidoException;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class PagamentoService {
@@ -37,7 +38,7 @@ public class PagamentoService {
 	public PagamentoBoleto geraBoleto(Reserva reserva) {
 
 		PagamentoBoleto pagamento = new PagamentoBoleto(null, TipoPagamento.BOLETO, false,
-				null, null, reserva, "");
+				null, null, reserva, RandomString.make(47).toUpperCase());
 
 		pagamento = this.pagamentoRepository.save(pagamento);
 		reserva.adicionaPagamento(pagamento);

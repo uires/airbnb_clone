@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class PagamentoBoleto extends Pagamento {
 
 	@Getter
