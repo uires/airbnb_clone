@@ -25,6 +25,7 @@ import br.com.airbnb.domain.acomodacao.Hospedes;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeCancelarException;
 import br.com.airbnb.domain.acomodacao.exception.ImpossibilidadeConfirmarException;
 import br.com.airbnb.domain.acomodacao.exception.NaoPodeAvaliarException;
+import br.com.airbnb.domain.acomodacao.exception.PagamentoRealizadoException;
 import br.com.airbnb.domain.acomodacao.reservas.avaliacao.Avaliacao;
 import br.com.airbnb.domain.acomodacao.reservas.pagamento.Pagamento;
 import br.com.airbnb.domain.usuario.Usuario;
@@ -203,7 +204,7 @@ public class Reserva {
 
 	public void adicionaPagamento(Pagamento pagamento) {
 		if (this.pagamento != null) {
-
+			throw new PagamentoRealizadoException();
 		}
 
 		this.pagamento = pagamento;
