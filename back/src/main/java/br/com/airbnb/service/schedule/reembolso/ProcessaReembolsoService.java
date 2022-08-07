@@ -1,4 +1,4 @@
-package br.com.airbnb.service.schedule;
+package br.com.airbnb.service.schedule.reembolso;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
