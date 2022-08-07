@@ -28,6 +28,7 @@ import br.com.airbnb.domain.acomodacao.exception.NaoPodeAvaliarException;
 import br.com.airbnb.domain.acomodacao.exception.PagamentoRealizadoException;
 import br.com.airbnb.domain.acomodacao.reservas.avaliacao.Avaliacao;
 import br.com.airbnb.domain.acomodacao.reservas.pagamento.Pagamento;
+import br.com.airbnb.domain.acomodacao.reservas.pagamento.PagamentoCartao;
 import br.com.airbnb.domain.usuario.Usuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -205,6 +206,10 @@ public class Reserva {
 	public void adicionaPagamento(Pagamento pagamento) {
 		if (this.pagamento != null) {
 			throw new PagamentoRealizadoException();
+		}
+
+		if (pagamento instanceof PagamentoCartao) {
+			pagamento.processaPagamento();
 		}
 
 		this.pagamento = pagamento;
