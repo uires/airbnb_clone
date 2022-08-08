@@ -108,6 +108,7 @@ public class Reserva {
 	@OneToOne(mappedBy = "reserva")
 	private Avaliacao avaliacao;
 
+	@Getter
 	@OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
 	private Pagamento pagamento;
 
