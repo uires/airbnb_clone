@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import br.com.airbnb.controller.exception.EntityNotFoundException;
 import br.com.airbnb.controller.exception.TipoPgtInvalidoException;
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
-import br.com.airbnb.domain.acomodacao.reservas.pagamento.Pagamento;
 import br.com.airbnb.domain.acomodacao.reservas.pagamento.PagamentoCartao;
 import br.com.airbnb.domain.acomodacao.reservas.pagamento.TipoPagamento;
 import br.com.airbnb.domain.usuario.pagamento.Cartao;
@@ -21,7 +20,7 @@ public class PagamentoComCartaoForm {
 	private Long idCartao;
 	private TipoPagamento tipoPagamento;
 
-	public Pagamento converte(CartaoRepository cartaoRepository, Reserva reserva) {
+	public PagamentoCartao converte(CartaoRepository cartaoRepository, Reserva reserva) {
 		if (tipoPagamento.equals(TipoPagamento.CARTAO_CREDITO) && tipoPagamento.equals(TipoPagamento.CARTAO_DEBITO)) {
 			throw new TipoPgtInvalidoException();
 		}

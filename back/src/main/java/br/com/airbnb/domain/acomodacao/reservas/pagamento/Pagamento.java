@@ -15,7 +15,6 @@ import javax.persistence.OneToOne;
 
 import br.com.airbnb.domain.acomodacao.reservas.Reserva;
 import br.com.airbnb.domain.acomodacao.reservas.pagamento.exception.PgtJaProcessadoException;
-import br.com.airbnb.domain.usuario.pagamento.Cartao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,10 +39,6 @@ abstract public class Pagamento {
 	protected LocalDateTime dataProcessamento;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "cartao_id", referencedColumnName = "id", nullable = true)
-	protected Cartao cartao;
-
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "reserva_id", referencedColumnName = "id", nullable = false)
 	protected Reserva reserva;
 	
@@ -55,4 +50,5 @@ abstract public class Pagamento {
 		this.processado = true;
 		this.dataProcessamento = LocalDateTime.now();
 	}
+
 }
