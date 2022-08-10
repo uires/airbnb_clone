@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --salmon-color: #ff5a5f;
+  --light-footer: #f7f7f7;
+}
+
+.btn-salmon {
+  color: #fff !important;
+
+  background-color: var(--salmon-color) !important;
+  border-color: var(--salmon-color) !important;
+  &:hover {
+    color: #fff;
+    background-color: red;
+    border-color: var(--salmon-color);
+  }
+}
