@@ -42,9 +42,8 @@
                 </li>
                 <li>
                   <a
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalLogin"
                     class="dropdown-item"
+                    (click)="displayModalLogin = true"
                     href="#"
                     >Entrar</a
                   >
@@ -63,13 +62,15 @@
           </div>
         </li>
       </ul>
-      <button class="btn btn-salmon" (click)="display = true">
+      <button class="btn btn-salmon" (click)="displaySearch = true">
         Comece sua busca&nbsp;&nbsp;<i class="bi bi-search"></i>
       </button>
     </div>
   </div>
 </nav>
 
-<p-sidebar [(visible)]="display" styleClass="p-sidebar-lg" position="top">
+<p-sidebar [(visible)]="displaySearch" styleClass="p-sidebar-lg" position="top">
   <ng-container> </ng-container>
 </p-sidebar>
+
+<app-login [display]="displayModalLogin"></app-login>

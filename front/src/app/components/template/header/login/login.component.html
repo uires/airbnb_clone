@@ -1,0 +1,23 @@
+<p-dialog
+  header="Entrar"
+  [(visible)]="display"
+  [draggable]="false"
+  [resizable]="false"
+  [modal]="true"
+  position="top"
+  styleClass="w-50"
+>
+  <div>
+    <form>
+      <div class="mb-3">
+        <label for="username" class="form-label">Usuário</label>
+        <input type="text" class="form-control" id="username" />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="password" />
+      </div>
+      <button type="submit" class="btn btn-salmon">Login</button>
+    </form>
+  </div>
+</p-dialog>
