@@ -20,9 +20,9 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
         <li class="nav-item">
           <div>
-            <button class="btn on-hover-light rounded-pill">
+            <a class="btn rounded-pill me-1">
               <span class="h6">Seja um anfitrião</span>
-            </button>
+            </a>
 
             <div class="btn-group mf-3">
               <button
@@ -31,13 +31,13 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="bi bi-justify"></i>
+                <i class="bi bi-justify me-2"></i>
                 <i class="bi bi-person-circle"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
                   <a class="dropdown-item" href="#"
-                    ><span class="h6">Cadastre-se</span></a
+                    ><span><strong>Cadastre-se</strong></span></a
                   >
                 </li>
                 <li>
@@ -63,14 +63,13 @@
           </div>
         </li>
       </ul>
-      <button
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasTop"
-        aria-controls="offcanvasTop"
-        class="btn btn-salmon"
-      >
+      <button class="btn btn-salmon" (click)="display = true">
         Comece sua busca&nbsp;&nbsp;<i class="bi bi-search"></i>
       </button>
     </div>
   </div>
 </nav>
+
+<p-sidebar [(visible)]="display" styleClass="p-sidebar-lg" position="top">
+  <ng-container> </ng-container>
+</p-sidebar>

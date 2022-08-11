@@ -1,0 +1,55 @@
+.header {
+  height: 80px;
+}
+
+.on-hover-light {
+  & :hover {
+    background-color: #f8f9fa;
+  }
+}
+
+.opacity-95 {
+  opacity: 0.95;
+}
+
+.image-aside {
+  width: auto;
+  height: 400px;
+}
+
+.footer {
+  height: 419px;
+}
+
+.bg-pink-light {
+  background-color: #bc1a6e;
+}
+
+.bg-red-wine {
+  background-color: #de3151;
+}
+
+.bg-red-blood {
+  background-color: #d93b30;
+}
+
+.bg-purple-strong {
+  background-color: #cc2d4a;
+}
+
+.white-color {
+  color: #fff;
+}
+
+.card-location {
+  height: 29.5rem;
+  width: 20rem;
+}
+
+.mt-80px {
+  margin-top: 38px;
+}
+
+.color-grey {
+  color: #818181;
+}
